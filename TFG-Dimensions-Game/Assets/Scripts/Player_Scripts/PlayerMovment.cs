@@ -4,41 +4,32 @@ using UnityEngine;
 
 public class PlayerMovment : MonoBehaviour
 {
-    public float moveSpeed;
-    public Transform orientation;
 
     float horizontalInput;
     float verticalInput;
-
-    Vector3 moveDirections;
-
-    Rigidbody player;
+    public float rotationSpeed;
+    public float movementSpeed;
     void Start()
     {
-        player = GetComponent<Rigidbody>();
-        player.freezeRotation = true;
+
     }
 
     void Update()
     {
-        MyInput();
+        horizontalInput = Input.GetAxis("Horizontal"); //declarem el movment
+        verticalInput = Input.GetAxis("Vertical"); // declarem el movment
+
+        //movment
+        Vector3 movementDirection = new Vector3(horizontalInput, 0, 0);
+
+        transform.position = transform.position + movementDirection * movementSpeed * Time.deltaTime;
+
+        //rotation
+        Vector3 rotationMovment = new Vector3(verticalInput, 0, -verticalInput);
+
+        transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(rotationMovment), rotationSpeed * Time.deltaTime);
+
+        //if (movementDirection != Vector3.zero)transform.rotation = Quaternion.Slerp(transform.rotation,Quaternion.LookRotation(movementDirection), rotationSpeed * Time.deltaTime); 
     }
 
-    private void FixedUpdate()
-    {
-        MovePlayer();
-    }
-
-    private void MyInput()
-    {
-        horizontalInput = Input.GetAxisRaw("Horinzontal");
-        verticalInput = Input.GetAxisRaw("Vertical");
-    }
-
-    private void MovePlayer()
-    {
-        // calculate movment direction
-        moveDirections = orientation.forward * verticalInput + orientation.right * horizontalInput;
-        player.AddForce(moveDirections.normalized * moveSpeed * 10f, ForceMode.Force);
-    }
 }
