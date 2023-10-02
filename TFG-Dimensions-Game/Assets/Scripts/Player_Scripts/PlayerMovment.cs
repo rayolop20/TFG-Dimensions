@@ -21,15 +21,27 @@ public class PlayerMovment : MonoBehaviour
 
         //movment
         Vector3 movementDirection = new Vector3(horizontalInput, 0, 0);
+        Vector3 rotationMovment = new Vector3(0, verticalInput * rotationSpeed * Time.deltaTime, 0);
 
         transform.position = transform.position + movementDirection * movementSpeed * Time.deltaTime;
 
         //rotation
-        Vector3 rotationMovment = new Vector3(verticalInput, 0, -verticalInput);
-
-        transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(rotationMovment), rotationSpeed * Time.deltaTime);
+        // Vector3 rotationMovment = new Vector3(verticalInput, 0, -verticalInput);
+        //
+        // transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(rotationMovment), rotationSpeed * Time.deltaTime);
 
         //if (movementDirection != Vector3.zero)transform.rotation = Quaternion.Slerp(transform.rotation,Quaternion.LookRotation(movementDirection), rotationSpeed * Time.deltaTime); 
+
+        if (Input.GetKey(KeyCode.W))
+        {
+            transform.Rotate(rotationMovment);
+        }
+
+        
+      //  if (Input.GetKey(KeyCode.S))
+      //  {
+      //      transform.Rotate(rotationMovment * -1);
+      //  }
     }
 
 }
