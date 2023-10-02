@@ -21,7 +21,7 @@ public class PlayerMovment : MonoBehaviour
 
         //movment
         Vector3 movementDirection = new Vector3(horizontalInput, 0, 0);
-        Vector3 rotationMovment = new Vector3(0, verticalInput * rotationSpeed * Time.deltaTime, 0);
+        Vector3 rotationMovment = new Vector3(0, -(verticalInput * rotationSpeed * Time.deltaTime), 0);
 
         transform.position = transform.position + movementDirection * movementSpeed * Time.deltaTime;
 
@@ -38,10 +38,10 @@ public class PlayerMovment : MonoBehaviour
         }
 
         
-      //  if (Input.GetKey(KeyCode.S))
-      //  {
-      //      transform.Rotate(rotationMovment * -1);
-      //  }
+       if (Input.GetKey(KeyCode.S))
+       {
+            transform.Rotate(rotationMovment);
+       }
     }
 
 }
