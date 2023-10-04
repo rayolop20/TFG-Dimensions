@@ -9,6 +9,7 @@ public class PlayerMovment : MonoBehaviour
     float verticalInput;
     public float rotationSpeed;
     public float movementSpeed;
+    public float JumpPower;
     void Start()
     {
 
@@ -36,6 +37,11 @@ public class PlayerMovment : MonoBehaviour
         if (Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.S))
         {
             transform.Rotate(rotationMovment);
+        }
+
+        if (Input.GetKey(KeyCode.Space))
+        {
+
         }
     }
 
