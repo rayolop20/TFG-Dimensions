@@ -8,6 +8,7 @@ public class Renderer2D : MonoBehaviour
     public float rayLength = 10f;
     RaycastHit[] hits;
     List<RaycastHit> allHits = new();
+    private List<GameObject> actualObjects = new List<GameObject>();
     void Start()
     {
     }
@@ -16,30 +17,47 @@ public class Renderer2D : MonoBehaviour
     void Update()
     {
 
-        RaycastHit[] actualHits = Physics.RaycastAll(transform.position, transform.forward, rayLength);
 
-        if (hits != actualHits)
+        hits = Physics.RaycastAll(transform.position, transform.forward, rayLength);
+
+
+        foreach (GameObject obj in actualObjects)
         {
-            hits = actualHits;
+            bool  hitActive = false;
             foreach (RaycastHit hit in hits)
             {
-                hit.collider.gameObject.layer = LayerMask.NameToLayer("2D");
+                if (hit.collider.gameObject == obj)
+                {
+                    hitActive = true;
+                    break;
+                }
+            }
 
-                allHits.Add(hit);
-                Debug.Log("Entro");
+            if (!hitActive)
+            {
+                obj.layer = LayerMask.NameToLayer("Default");
             }
         }
+        
+        
+        actualObjects.Clear(); //clear last frame list
+        foreach (RaycastHit hit in hits)
+        {
+            actualObjects.Add(hit.collider.gameObject);
+            hit.collider.gameObject.layer = LayerMask.NameToLayer("2D");
+        }
 
-       
+        // Actualizar la lista de objetos tocados en el fotograma actual
 
 
-        //for (int i = 0; i < hits.Length; i++)
-        //{
-        //    if (allHits[i] != hits[i] )
-        //    {
+        //RaycastHit[] actualHits = Physics.RaycastAll(transform.position, transform.forward, rayLength);
         //
-        //    }
+        //foreach (RaycastHit hit in hits)
+        //{
+        //    hit.collider.gameObject.layer = LayerMask.NameToLayer("2D");
         //}
+        //
+
 
     }
 
