@@ -47,18 +47,6 @@ public class Renderer2D : MonoBehaviour
             hit.collider.gameObject.layer = LayerMask.NameToLayer("2D");
         }
 
-        // Actualizar la lista de objetos tocados en el fotograma actual
-
-
-        //RaycastHit[] actualHits = Physics.RaycastAll(transform.position, transform.forward, rayLength);
-        //
-        //foreach (RaycastHit hit in hits)
-        //{
-        //    hit.collider.gameObject.layer = LayerMask.NameToLayer("2D");
-        //}
-        //
-
-
     }
 
     private void OnDrawGizmos()
