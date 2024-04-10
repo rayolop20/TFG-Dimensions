@@ -27,36 +27,54 @@ public class RealRender2D : MonoBehaviour
     void Update()
     {
         newPositions.Clear();
+        lastPositions.Clear(); ;
         hitsCount = 0;
         LastHitPosition = transform.position;
 
         for (int i = 0; i <= hitsCount; i++)
         {
-            Ray ray = new Ray(LastHitPosition, transform.forward);
 
+            Ray ray = new Ray(LastHitPosition, transform.forward);
             RaycastHit hitInfo;
 
-
+            Debug.Log("new: " + newPositions.Count);
+            Debug.Log("Last: " + lastPositions.Count);
             if (Physics.Raycast(ray, out hitInfo, rayLength))
             {
-                hitsCount++;
+                hitsCount++; // suma quan fa hit
                 newPositions.Add(hitInfo.point);
-                LastHitPosition = hitInfo.point + new Vector3(0, 0, 0.01f);
-                //Debug.Log(newPositions[i]);
-                // Dibujar el rayo en la escena hasta el punto de colisión
+                LastHitPosition = hitInfo.point + new Vector3(0, 0, 0.01f); // + 0.01 per no tornar a colisionar
+
+                // Dubiaxar raig a l'escena
                 Debug.DrawRay(LastHitPosition, transform.forward * hitInfo.distance, Color.red);
             }
-           
-            if (i % 2 == 0 && i != 0 && lastPositions != newPositions)
+            Debug.Log("new: " + newPositions.Count);
+            Debug.Log("Last: " + lastPositions.Count);
+
+            if (i % 2 != 0 && i != 0)
             {
-                HitObjects colidedObject = new HitObjects();
-                colidedObject.initPosition = newPositions[i - 2];
-                colidedObject.endPosition = newPositions[i - 1];
-                hObjetcs.Add(colidedObject);
+                if (lastPositions != newPositions)
+                {
+                    HitObjects colidedObject = new HitObjects();
+                    colidedObject.initPosition = newPositions[i - 1];
+                    colidedObject.endPosition = newPositions[i];
+                    hObjetcs.Add(colidedObject);
+                    Debug.Log("init: " + colidedObject.initPosition + " end: " + colidedObject.endPosition);
+                }            
+                else if (lastPositions[i - 1] != newPositions[i - 1])
+                {
+                    HitObjects colidedObject = new HitObjects();
+                    colidedObject.initPosition = newPositions[i - 1];
+                    colidedObject.endPosition = newPositions[i];
+                    hObjetcs.Add(colidedObject);
+                }
+
             }
 
-        }
-        lastPositions = newPositions;
+            lastPositions.AddRange(newPositions);
+        } 
+
+
 
     }
 
