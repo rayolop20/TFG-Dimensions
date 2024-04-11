@@ -19,6 +19,8 @@ public class RealRender2D : MonoBehaviour
     private List<Vector3> newPositions = new();
     private List<Vector3> lastPositions = new();
     public List<HitObjects> hObjetcs = new();
+
+
     private void Start()
     {
         // Comprobar si el rayo colisiona con algo
@@ -27,7 +29,6 @@ public class RealRender2D : MonoBehaviour
     void Update()
     {
         newPositions.Clear();
-        lastPositions.Clear(); ;
         hitsCount = 0;
         LastHitPosition = transform.position;
 
@@ -60,21 +61,22 @@ public class RealRender2D : MonoBehaviour
                     colidedObject.endPosition = newPositions[i];
                     hObjetcs.Add(colidedObject);
                     Debug.Log("init: " + colidedObject.initPosition + " end: " + colidedObject.endPosition);
+
+                    Debug.Log("Entro LUPACo: ");
                 }            
-                else if (lastPositions[i - 1] != newPositions[i - 1])
+                else if (lastPositions[i - 1] != newPositions[i - 1] || lastPositions[i] != newPositions[i])
                 {
                     HitObjects colidedObject = new HitObjects();
                     colidedObject.initPosition = newPositions[i - 1];
                     colidedObject.endPosition = newPositions[i];
                     hObjetcs.Add(colidedObject);
+                    Debug.Log("Entro 23: ");
                 }
 
             }
 
-            lastPositions.AddRange(newPositions);
-        } 
-
-
+            lastPositions = new List<Vector3>(newPositions);
+        }
 
     }
 
