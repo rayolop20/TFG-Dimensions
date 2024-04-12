@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class RealRender2D : MonoBehaviour
 {
-    public struct HitObjects
+    public class HitObjects
     {
         public Vector3 initPosition;
         public Vector3 endPosition;
@@ -32,14 +32,13 @@ public class RealRender2D : MonoBehaviour
         hitsCount = 0;
         LastHitPosition = transform.position;
 
+        //calcular numero de hits del rayo
         for (int i = 0; i <= hitsCount; i++)
         {
 
             Ray ray = new Ray(LastHitPosition, transform.forward);
             RaycastHit hitInfo;
 
-            Debug.Log("new: " + newPositions.Count);
-            Debug.Log("Last: " + lastPositions.Count);
             if (Physics.Raycast(ray, out hitInfo, rayLength))
             {
                 hitsCount++; // suma quan fa hit
@@ -49,36 +48,33 @@ public class RealRender2D : MonoBehaviour
                 // Dubiaxar raig a l'escena
                 Debug.DrawRay(LastHitPosition, transform.forward * hitInfo.distance, Color.red);
             }
-            Debug.Log("new: " + newPositions.Count);
-            Debug.Log("Last: " + lastPositions.Count);
+        }
 
-            if (i % 2 != 0 && i != 0)
+        //calcular i adegir objectes i posicions noves
+
+        for (int i = 0; i <= newPositions.Count; i++)
+        {
+            if (i % 2 == 0 && i != 0)
             {
-                if (lastPositions != newPositions)
+                if (lastPositions.Count != newPositions.Count) // comparar si tamany es diferent
                 {
                     HitObjects colidedObject = new HitObjects();
-                    colidedObject.initPosition = newPositions[i - 1];
-                    colidedObject.endPosition = newPositions[i];
+                    colidedObject.initPosition = newPositions[i - 2];
+                    colidedObject.endPosition = newPositions[i - 1];
                     hObjetcs.Add(colidedObject);
-                    Debug.Log("init: " + colidedObject.initPosition + " end: " + colidedObject.endPosition);
+                    Debug.Log("LUPACO CABRON: ");
+                }
+                else if (lastPositions[i - 2] != newPositions[i - 2] || lastPositions[i - 1] != newPositions[i - 1]) // mirar si les posicions son diferents
+                {
+                    hObjetcs[i - 2].initPosition = newPositions[i - 2];
+                    hObjetcs[i - 2].endPosition = newPositions[i - 1];
 
-                    Debug.Log("Entro LUPACo: ");
-                }            
-                else if (lastPositions[i - 1] != newPositions[i - 1] || lastPositions[i] != newPositions[i])
-                {
-                    HitObjects colidedObject = new HitObjects();
-                    colidedObject.initPosition = newPositions[i - 1];
-                    colidedObject.endPosition = newPositions[i];
-                    hObjetcs.Add(colidedObject);
-                    Debug.Log("Entro 23: ");
                 }
 
             }
-
-            lastPositions = new List<Vector3>(newPositions);
         }
-
-    }
+        lastPositions = new List<Vector3>(newPositions);
+    } 
 
     private void OnDrawGizmos()
     {

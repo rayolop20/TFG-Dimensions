@@ -22,9 +22,8 @@ public class WorldGenerator : MonoBehaviour
     void Update()
     {
 
-        if (numberObjects != rInfo.hObjetcs.Count)
+        if (numberObjects != rInfo.hObjetcs.Count) // crerar numeror de objectes segons cada 2 punts
         {
-
             for (int i = 0; i < rInfo.hObjetcs.Count; i++)
             {
                 GameObject newPlane = Instantiate(plane, Vector3.zero, Quaternion.Euler(0, 0, -90));
@@ -32,15 +31,13 @@ public class WorldGenerator : MonoBehaviour
                 planeList.Add(newPlane);
             }
         }
-        for (int i = 0; i < planeList.Count; i++)
+        for (int i = 0; i < planeList.Count; i++)//actualitzar la posició
         {
             float scale = getObjectScale(i);
-            float position = getObjectPos2D(i);
+            float position = getObjectPos2D(scale);
             UpdateFloor(i, scale, position);
         }
 
-        //Destroy(nPlane.gameObject);
-        //hObjetcs.Clear();
     }
 
     private float getObjectScale (int numobj)
@@ -56,7 +53,7 @@ public class WorldGenerator : MonoBehaviour
     private void UpdateFloor(int number, float scale, float position)
     {
         planeList[number].layer = LayerMask.NameToLayer("2D");
-        planeList[number].transform.position = new Vector3(0, 0, rInfo.hObjetcs[0].initPosition.z + position);
+        planeList[number].transform.position = new Vector3(0, 0, rInfo.hObjetcs[number].initPosition.z + position);
         planeList[number].transform.localScale = new Vector3(plane.transform.localScale.x / 10, 1, scale / 10); //scale units 1 position = 10 scale
     }
 }
