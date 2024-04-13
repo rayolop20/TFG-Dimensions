@@ -66,9 +66,10 @@ public class RealRender2D : MonoBehaviour
                 }
                 else if (lastPositions[i - 2] != newPositions[i - 2] || lastPositions[i - 1] != newPositions[i - 1]) // mirar si les posicions son diferents
                 {
-                    hObjetcs[i - 2].initPosition = newPositions[i - 2];
-                    hObjetcs[i - 2].endPosition = newPositions[i - 1];
 
+                    int  ObjectNumberId = (i / 2) - 1;
+                    hObjetcs[ObjectNumberId].initPosition = newPositions[i - 2];
+                    hObjetcs[ObjectNumberId].endPosition = newPositions[i - 1]; // revisar
                 }
 
             }
