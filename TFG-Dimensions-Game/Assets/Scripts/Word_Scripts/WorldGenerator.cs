@@ -22,21 +22,21 @@ public class WorldGenerator : MonoBehaviour
     void Update()
     {
 
-        if (numberObjects != rInfo.hObjetcs.Count) // crerar numeror de objectes segons cada 2 punts
-        {
-            for (int i = 0; i < rInfo.hObjetcs.Count; i++)
-            {
-                GameObject newPlane = Instantiate(plane, Vector3.zero, Quaternion.Euler(0, 0, -90));
-                numberObjects++;
-                planeList.Add(newPlane);
-            }
-        }
-        for (int i = 0; i < planeList.Count; i++)//actualitzar la posició
-        {
-            float scale = getObjectScale(i);
-            float position = getObjectPos2D(scale);
-            UpdateFloor(i, scale, position);
-        }
+       // if (numberObjects != rInfo.hObjetcs.Count) // crerar numeror de objectes segons cada 2 punts
+       // {
+       //     for (int i = 0; i < rInfo.hObjetcs.Count; i++)
+       //     {
+       //         GameObject newPlane = Instantiate(plane, Vector3.zero, Quaternion.Euler(0, 0, -90));
+       //         numberObjects++;
+       //         planeList.Add(newPlane);
+       //     }
+       // }
+       // for (int i = 0; i < planeList.Count; i++)//actualitzar la posició
+       // {
+       //     float scale = getObjectScale(i);
+       //     float position = getObjectPos2D(scale);
+       //     UpdateFloor(i, scale, position);
+       // }
 
     }
 

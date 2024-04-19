@@ -6,12 +6,12 @@ public class RealRender2D : MonoBehaviour
 {
     public class HitObjects
     {
+        public int id;
         public Vector3 initPosition;
         public Vector3 endPosition;
     }
 
     public float rayLength = 10f; // Longitud del rayo
-    public LayerMask layerMask; // Máscara de capas para la detección de colisiones
 
 
     int hitsCount = 0;
@@ -19,6 +19,7 @@ public class RealRender2D : MonoBehaviour
     private List<Vector3> newPositions = new();
     private List<Vector3> lastPositions = new();
     public List<HitObjects> hObjetcs = new();
+    private int ObjectNumberId = 0;
 
 
     private void Start()
@@ -44,35 +45,44 @@ public class RealRender2D : MonoBehaviour
                 hitsCount++; // suma quan fa hit
                 newPositions.Add(hitInfo.point);
                 LastHitPosition = hitInfo.point + new Vector3(0, 0, 0.01f); // + 0.01 per no tornar a colisionar
-
-                // Dubiaxar raig a l'escena
                 Debug.DrawRay(LastHitPosition, transform.forward * hitInfo.distance, Color.red);
             }
         }
 
         //calcular i adegir objectes i posicions noves
 
-        for (int i = 0; i <= newPositions.Count; i++)
+        if (newPositions.Count == 0)
         {
-            if (i % 2 == 0 && i != 0)
+           hObjetcs.Clear();
+        }
+        else
+        {
+            for (int i = 0; i <= newPositions.Count; i++)
             {
-                if (lastPositions.Count != newPositions.Count) // comparar si tamany es diferent
+                if (i % 2 == 0 && i != 0)
                 {
-                    HitObjects colidedObject = new HitObjects();
-                    colidedObject.initPosition = newPositions[i - 2];
-                    colidedObject.endPosition = newPositions[i - 1];
-                    hObjetcs.Add(colidedObject);
-                    Debug.Log("LUPACO CABRON: ");
-                }
-                else if (lastPositions[i - 2] != newPositions[i - 2] || lastPositions[i - 1] != newPositions[i - 1]) // mirar si les posicions son diferents
-                {
+                    ObjectNumberId = (i / 2) - 1;
+                    Debug.Log("Positions: " + newPositions.Count.ToString());
+                    if (lastPositions.Count < newPositions.Count) // comparar si tamany es diferent
+                    {
+                        HitObjects colidedObject = new HitObjects();
+                        colidedObject.initPosition = newPositions[i - 2];
+                        colidedObject.endPosition = newPositions[i - 1];
+                        colidedObject.id = ObjectNumberId;
+                        hObjetcs.Add(colidedObject);
+                    }
+                    else if (lastPositions.Count > newPositions.Count)
+                    {
+                        hObjetcs.Remove(hObjetcs[ObjectNumberId]);
+                    }
+                    else if (lastPositions[i - 2] != newPositions[i - 2] || lastPositions[i - 1] != newPositions[i - 1]) // mirar si les posicions son diferents
+                    {
+                        actualizePositions(ObjectNumberId, i);
+                    }
 
-                    int  ObjectNumberId = (i / 2) - 1;
-                    hObjetcs[ObjectNumberId].initPosition = newPositions[i - 2];
-                    hObjetcs[ObjectNumberId].endPosition = newPositions[i - 1]; // revisar
                 }
-
             }
+      
         }
         lastPositions = new List<Vector3>(newPositions);
     } 
@@ -81,6 +91,12 @@ public class RealRender2D : MonoBehaviour
     {
         Gizmos.color = Color.red;
         Gizmos.DrawRay(transform.position, transform.forward * rayLength);
+    }
+
+    private void actualizePositions(int objectId, int listNum)
+    {
+        hObjetcs[objectId].initPosition = newPositions[listNum - 2];
+        hObjetcs[objectId].endPosition = newPositions[listNum - 1]; 
     }
 
 }
