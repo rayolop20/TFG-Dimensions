@@ -73,7 +73,7 @@ public class RealRender2D : MonoBehaviour
                     }
                     else if (lastPositions.Count > newPositions.Count)
                     {
-                        hObjetcs.Remove(hObjetcs[ObjectNumberId]);
+                        hObjetcs.Remove(hObjetcs[ObjectNumberId]);//Revisar
                     }
                     else if (lastPositions[i - 2] != newPositions[i - 2] || lastPositions[i - 1] != newPositions[i - 1]) // mirar si les posicions son diferents
                     {
