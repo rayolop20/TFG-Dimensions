@@ -519,6 +519,7 @@ GameObject:
   - component: {fileID: 1259717909}
   - component: {fileID: 1259717910}
   - component: {fileID: 1259717911}
+  - component: {fileID: 1259717912}
   m_Layer: 0
   m_Name: Ray2
   m_TagString: Untagged
@@ -566,7 +567,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1259717907}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e36286419cdd4ce4a9e610a9e25104b6, type: 3}
   m_Name: 
@@ -585,6 +586,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rayLength: 10
+--- !u!114 &1259717912
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1259717907}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7c52ecf9868604f4aad40edb87b1986f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  rayLength: 10
 --- !u!1 &1285239166
 GameObject:
   m_ObjectHideFlags: 0
@@ -595,6 +609,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1285239168}
   - component: {fileID: 1285239167}
+  - component: {fileID: 1285239169}
   m_Layer: 0
   m_Name: World2DGenerator
   m_TagString: Untagged
@@ -609,7 +624,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1285239166}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9861277666e7c5f4ab39262fb877c05e, type: 3}
   m_Name: 
@@ -631,6 +646,20 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1285239169
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1285239166}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ea09a4c0a65d65848916d55f043a79c2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  plane: {fileID: 8707016464985655357, guid: f870c72c33dc79e4f9bb3558f48d3b54, type: 3}
+  rInfo: {fileID: 1259717912}
 --- !u!1 &1560532699
 GameObject:
   m_ObjectHideFlags: 0

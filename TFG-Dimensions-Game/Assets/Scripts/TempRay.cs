@@ -1,9 +1,11 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class RealRender2D : MonoBehaviour
+public class TempRay : MonoBehaviour
 {
+    // Start is called before the first frame update
     public class HitObjects
     {
         public int id;
@@ -18,7 +20,7 @@ public class RealRender2D : MonoBehaviour
     Vector3 LastHitPosition;
     private List<Vector3> newPositions = new();
     private List<Vector3> lastPositions = new();
-    public List<HitObjects> hObjetcs = new();
+    public Dictionary<int, HitObjects> hObjetcs = new();
     public List<HitObjects> removedObjects = new();
     private int ObjectNumberId = 0;
 
@@ -44,8 +46,13 @@ public class RealRender2D : MonoBehaviour
             if (Physics.Raycast(ray, out hitInfo, rayLength))
             {
                 hitsCount++; // suma quan fa hit
-                newPositions.Add(hitInfo.point);
-                LastHitPosition = hitInfo.point + new Vector3(0, 0, 0.01f); // + 0.01 per no tornar a colisionar
+                Vector3 roundedPoint = new Vector3((float)Math.Round(hitInfo.point.x, 2),
+                                                   (float)Math.Round(hitInfo.point.y, 2),
+                                                   (float)Math.Round(hitInfo.point.z, 2));
+
+                newPositions.Add(roundedPoint );
+
+                LastHitPosition = roundedPoint + new Vector3(0, 0, 0.01f); // + 0.01 per no tornar a colisionar
                 Debug.DrawRay(LastHitPosition, transform.forward * hitInfo.distance, Color.red);
             }
         }
@@ -54,7 +61,7 @@ public class RealRender2D : MonoBehaviour
 
         if (newPositions.Count == 0)
         {
-           hObjetcs.Clear();
+            hObjetcs.Clear();
         }
         else
         {
@@ -64,33 +71,41 @@ public class RealRender2D : MonoBehaviour
                 {
                     ObjectNumberId = (i / 2) - 1;
 
-                    if (lastPositions.Count < newPositions.Count) // comparar si tamany es diferent
+                    if (lastPositions.Count < newPositions.Count && !hObjetcs.ContainsKey(ObjectNumberId)) // comparar si tamany es diferent i el objectes esta creat o no
                     {
                         HitObjects colidedObject = new HitObjects();
                         colidedObject.initPosition = newPositions[i - 2];
                         colidedObject.endPosition = newPositions[i - 1];
                         colidedObject.id = ObjectNumberId;
-                        hObjetcs.Add(colidedObject);
+                        hObjetcs.Add(ObjectNumberId, colidedObject);
                     }
-                    else if (lastPositions.Count > newPositions.Count)
+                    //else if (lastPositions[i - 2] != newPositions[i - 2] || lastPositions[i - 1] != newPositions[i - 1]) // mirar si les posicions son diferents
+                    //{
+                    //    actualizePositions(ObjectNumberId, i);
+                    //}
+
+                }
+            }
+            if (lastPositions.Count > newPositions.Count)
+            {
+                for (int i = 0; i <= lastPositions.Count/2; i++)
+                {
+                    if (!newPositions.Contains(hObjetcs[i].initPosition))
                     {
-                        removedObjects.Add(hObjetcs[ObjectNumberId]);
-                        hObjetcs.Remove(hObjetcs[ObjectNumberId]);//Revisar
+                        removedObjects.Add(hObjetcs[i]);
+                        hObjetcs.Remove(hObjetcs[i].id);//Revisar
                         lastPositions = new List<Vector3>(newPositions);
-                    }
-                    else if (lastPositions[i - 2] != newPositions[i - 2] || lastPositions[i - 1] != newPositions[i - 1]) // mirar si les posicions son diferents
-                    {
-                        actualizePositions(ObjectNumberId, i);
                     }
 
                 }
             }
-      
+
+
         }
         Debug.Log("Positions: " + newPositions.Count.ToString());
         Debug.Log("Positions: " + hObjetcs.Count.ToString());
         lastPositions = new List<Vector3>(newPositions);
-    } 
+    }
 
     private void OnDrawGizmos()
     {
@@ -101,7 +116,6 @@ public class RealRender2D : MonoBehaviour
     private void actualizePositions(int objectId, int listNum)
     {
         hObjetcs[objectId].initPosition = newPositions[listNum - 2];
-        hObjetcs[objectId].endPosition = newPositions[listNum - 1]; 
+        hObjetcs[objectId].endPosition = newPositions[listNum - 1];
     }
-
 }
