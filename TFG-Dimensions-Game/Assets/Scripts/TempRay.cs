@@ -1,19 +1,17 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
-
-public class HitObjects
-{
-    public int id;
-    public Vector3 initPosition;
-    public Vector3 endPosition;
-}
 
 public class TempRay : MonoBehaviour
 {
     // Start is called before the first frame update
-
+    public class HitObjects
+    {
+        public int id;
+        public Vector3 initPosition;
+        public Vector3 endPosition;
+    }
 
     public float rayLength = 10f; // Longitud del rayo
 
@@ -52,7 +50,7 @@ public class TempRay : MonoBehaviour
                                                    (float)Math.Round(hitInfo.point.y, 2),
                                                    (float)Math.Round(hitInfo.point.z, 2));
 
-                newPositions.Add(roundedPoint);
+                newPositions.Add(roundedPoint );
 
                 LastHitPosition = roundedPoint + new Vector3(0, 0, 0.01f); // + 0.01 per no tornar a colisionar
                 Debug.DrawRay(LastHitPosition, transform.forward * hitInfo.distance, Color.red);
@@ -61,7 +59,11 @@ public class TempRay : MonoBehaviour
 
         //calcular i adegir objectes i posicions noves
 
-        if (newPositions.Count != null)
+        if (newPositions.Count == 0)
+        {
+            hObjetcs.Clear();
+        }
+        else
         {
             for (int i = 0; i <= newPositions.Count; i++)
             {
@@ -77,34 +79,26 @@ public class TempRay : MonoBehaviour
                         colidedObject.id = ObjectNumberId;
                         hObjetcs.Add(ObjectNumberId, colidedObject);
                     }
-                   // else if (lastPositions[i - 2] != newPositions[i - 2] || lastPositions[i - 1] != newPositions[i - 1]) // mirar si les posicions son diferents
-                   // {
-                   //     actualizePositions(ObjectNumberId, i);
-                   // }//Revisar (fer amb posoicions de hObjects?)
+                    //else if (lastPositions[i - 2] != newPositions[i - 2] || lastPositions[i - 1] != newPositions[i - 1]) // mirar si les posicions son diferents
+                    //{
+                    //    actualizePositions(ObjectNumberId, i);
+                    //}
 
                 }
             }
-
-            int vuelta_num = 0;
-            foreach (KeyValuePair<int, HitObjects> planeValue in hObjetcs)
+            if (lastPositions.Count > newPositions.Count)
             {
-                if (lastPositions.Count > newPositions.Count && !newPositions.Contains(planeValue.Value.initPosition))
+                for (int i = 0; i <= lastPositions.Count/2; i++)
                 {
-                   
-                    removedObjects.Add(planeValue.Value);
-                    hObjetcs.Remove(planeValue.Key);
-                    lastPositions = new List<Vector3>(newPositions);
-                    return;
-                    
-                }
-                else if (!newPositions.Contains(planeValue.Value.initPosition) || !newPositions.Contains(planeValue.Value.endPosition))
-                {
+                    if (!newPositions.Contains(hObjetcs[i].initPosition))
+                    {
+                        removedObjects.Add(hObjetcs[i]);
+                        hObjetcs.Remove(hObjetcs[i].id);//Revisar
+                        lastPositions = new List<Vector3>(newPositions);
+                    }
 
-                    actualizePositions(planeValue.Key, vuelta_num);
                 }
-                vuelta_num = vuelta_num + 2;
             }
-
 
 
         }
@@ -121,7 +115,7 @@ public class TempRay : MonoBehaviour
 
     private void actualizePositions(int objectId, int listNum)
     {
-        hObjetcs[objectId].initPosition = newPositions[listNum];
-        hObjetcs[objectId].endPosition = newPositions[listNum + 1];
+        hObjetcs[objectId].initPosition = newPositions[listNum - 2];
+        hObjetcs[objectId].endPosition = newPositions[listNum - 1];
     }
 }

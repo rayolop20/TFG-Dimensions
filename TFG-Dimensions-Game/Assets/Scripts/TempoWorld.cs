@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -24,50 +25,50 @@ public class TempoWorld : MonoBehaviour
 
             for (int i = 0; i < rInfo.hObjetcs.Count; i++)
             {
-                if (numberObjects < rInfo.hObjetcs.Count && !dictPlanes.ContainsKey(i))
+                if (numberObjects < rInfo.hObjetcs.Count)
                 {
+
                     GameObject newPlane = Instantiate(plane, Vector3.zero, Quaternion.Euler(0, 0, -90));
+
+
                     dictPlanes.Add(rInfo.hObjetcs[i].id, newPlane);
 
                     //planeList.Add(newPlanesobj);
                     numberObjects++;
                 }
-            }
-        }// revisar
 
-        if (numberObjects > rInfo.hObjetcs.Count)
-        {
-            foreach (HitObjects value in rInfo.removedObjects)
-            {
-                if (dictPlanes.ContainsKey(value.id))
+                if (numberObjects > rInfo.hObjetcs.Count)
                 {
-                    Destroy(dictPlanes[value.id].gameObject);
-                    dictPlanes.Remove(value.id);
-                    numberObjects--;
+                    for (int j = 0; j < rInfo.removedObjects.Count; j++)
+                    {
+                        if (dictPlanes.ContainsKey(rInfo.removedObjects[j].id))
+                        {
+                            Destroy(dictPlanes[rInfo.removedObjects[j].id].gameObject);
+                            dictPlanes.Remove(j);
+                            numberObjects--;
+                        }
+                    }
+
+                    rInfo.removedObjects.Clear();
                 }
             }
-            //for (int j = 0; j < rInfo.removedObjects.Count; j++)
-            //{
-            //    if (dictPlanes.ContainsKey(rInfo.removedObjects[j].id))
-            //    {
-            //        Destroy(dictPlanes[rInfo.removedObjects[j].id].gameObject);
-            //        dictPlanes.Remove(j);
-            //        numberObjects--;
-            //    }
-            //}
 
-            rInfo.removedObjects.Clear();
         }
-
         if (numberObjects == rInfo.hObjetcs.Count)
         {
+            int listPosition = 0;
             foreach (KeyValuePair<int, GameObject> item in dictPlanes)
             {
+
                 int index = item.Key; // Clave del diccionario
+
                 GameObject plane = item.Value;
-                float scale = getObjectScale(index);
+
+
+                float scale = getObjectScale(listPosition);
                 float position = getObjectPos2D(scale);
-                UpdateFloor(plane, index, scale, position);
+                UpdateFloor(plane, listPosition, scale, position);
+                listPosition++;
             }
         }
 
