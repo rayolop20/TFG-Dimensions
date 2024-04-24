@@ -1,17 +1,19 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+
+
+public class HitObjects
+{
+    public int id;
+    public Vector3 initPosition;
+    public Vector3 endPosition;
+}
 
 public class TempRay : MonoBehaviour
 {
     // Start is called before the first frame update
-    public class HitObjects
-    {
-        public int id;
-        public Vector3 initPosition;
-        public Vector3 endPosition;
-    }
+
 
     public float rayLength = 10f; // Longitud del rayo
 
@@ -21,12 +23,13 @@ public class TempRay : MonoBehaviour
     private List<Vector3> newPositions = new();
     private List<Vector3> lastPositions = new();
     public Dictionary<int, HitObjects> hObjetcs = new();
-    public List<HitObjects> removedObjects = new();
-    private int ObjectNumberId = 0;
+    public List<int> removedObjects = new();
+    private int ObjectNumberId;
 
 
     private void Start()
     {
+        ObjectNumberId = 0;
         // Comprobar si el rayo colisiona con algo
         Physics.queriesHitBackfaces = true;
     }
@@ -50,7 +53,7 @@ public class TempRay : MonoBehaviour
                                                    (float)Math.Round(hitInfo.point.y, 2),
                                                    (float)Math.Round(hitInfo.point.z, 2));
 
-                newPositions.Add(roundedPoint );
+                newPositions.Add(roundedPoint);
 
                 LastHitPosition = roundedPoint + new Vector3(0, 0, 0.01f); // + 0.01 per no tornar a colisionar
                 Debug.DrawRay(LastHitPosition, transform.forward * hitInfo.distance, Color.red);
@@ -59,50 +62,53 @@ public class TempRay : MonoBehaviour
 
         //calcular i adegir objectes i posicions noves
 
-        if (newPositions.Count == 0)
+        if (newPositions.Count != null)
         {
-            hObjetcs.Clear();
-        }
-        else
-        {
-            for (int i = 0; i <= newPositions.Count; i++)
+
+            for (int i = 0; i < newPositions.Count; i += 2)
             {
-                if (i % 2 == 0 && i != 0)
+                if (lastPositions.Count < newPositions.Count && !lastPositions.Contains(newPositions[i]) && !hObjetcs.ContainsKey(ObjectNumberId) && i % 2 == 0) // comparar si tamany es diferent i el objectes esta creat o no 
                 {
-                    ObjectNumberId = (i / 2) - 1;
-
-                    if (lastPositions.Count < newPositions.Count && !hObjetcs.ContainsKey(ObjectNumberId)) // comparar si tamany es diferent i el objectes esta creat o no
-                    {
-                        HitObjects colidedObject = new HitObjects();
-                        colidedObject.initPosition = newPositions[i - 2];
-                        colidedObject.endPosition = newPositions[i - 1];
-                        colidedObject.id = ObjectNumberId;
-                        hObjetcs.Add(ObjectNumberId, colidedObject);
-                    }
-                    //else if (lastPositions[i - 2] != newPositions[i - 2] || lastPositions[i - 1] != newPositions[i - 1]) // mirar si les posicions son diferents
-                    //{
-                    //    actualizePositions(ObjectNumberId, i);
-                    //}
-
+                    HitObjects colidedObject = new HitObjects();
+                    colidedObject.initPosition = newPositions[i ];
+                    colidedObject.endPosition = newPositions[i + 1];
+                    hObjetcs.Add(ObjectNumberId, colidedObject);
+                    lastPositions.Add(newPositions[i]);
+                    lastPositions.Add(newPositions[i + 1]);
+                    ObjectNumberId++;
+                    Debug.Log("Positionsdqwedwd: " + hObjetcs.Count.ToString());
                 }
-            }
-            if (lastPositions.Count > newPositions.Count)
-            {
-                for (int i = 0; i <= lastPositions.Count/2; i++)
-                {
-                    if (!newPositions.Contains(hObjetcs[i].initPosition))
-                    {
-                        removedObjects.Add(hObjetcs[i]);
-                        hObjetcs.Remove(hObjetcs[i].id);//Revisar
-                        lastPositions = new List<Vector3>(newPositions);
-                    }
+               // else if (lastPositions[i] != newPositions[i] || lastPositions[i + 1] != newPositions[i + 1]) // mirar si les posicions son diferents
+               // {
+               //     actualizePositions(ObjectNumberId -1, i);
+               // }//Revisar (fer amb posoicions de hObjects?)
 
-                }
             }
 
+            int vuelta_num = 0;
+            foreach (KeyValuePair<int, HitObjects> planeValue in hObjetcs)
+            {
+                if (lastPositions.Count > newPositions.Count && !newPositions.Contains(planeValue.Value.initPosition))
+                {
+                    int _key = planeValue.Key;
+                    removedObjects.Add(_key);
+                    hObjetcs.Remove(_key);
+                    lastPositions = new List<Vector3>(newPositions);
+                    return;
+
+                }
+                else if (!newPositions.Contains(planeValue.Value.initPosition) || !newPositions.Contains(planeValue.Value.endPosition))
+                {
+               
+                    actualizePositions(planeValue.Key, vuelta_num);
+                }
+                vuelta_num = vuelta_num + 2;
+            }
+
+
 
         }
-        Debug.Log("Positions: " + newPositions.Count.ToString());
+        //Debug.Log("Positions: " + newPositions.Count.ToString());
         Debug.Log("Positions: " + hObjetcs.Count.ToString());
         lastPositions = new List<Vector3>(newPositions);
     }
@@ -115,7 +121,7 @@ public class TempRay : MonoBehaviour
 
     private void actualizePositions(int objectId, int listNum)
     {
-        hObjetcs[objectId].initPosition = newPositions[listNum - 2];
-        hObjetcs[objectId].endPosition = newPositions[listNum - 1];
+        hObjetcs[objectId].initPosition = newPositions[listNum];
+        hObjetcs[objectId].endPosition = newPositions[listNum + 1];
     }
 }
