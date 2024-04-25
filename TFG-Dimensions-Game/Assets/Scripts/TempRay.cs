@@ -60,9 +60,10 @@ public class TempRay : MonoBehaviour
             }
         }
 
+
         //calcular i adegir objectes i posicions noves
 
-        if (newPositions.Count != null)
+        if (newPositions.Count % 2 != 1)
         {
 
             for (int i = 0; i < newPositions.Count; i += 2)
@@ -76,12 +77,7 @@ public class TempRay : MonoBehaviour
                     lastPositions.Add(newPositions[i]);
                     lastPositions.Add(newPositions[i + 1]);
                     ObjectNumberId++;
-                    Debug.Log("Positionsdqwedwd: " + hObjetcs.Count.ToString());
                 }
-               // else if (lastPositions[i] != newPositions[i] || lastPositions[i + 1] != newPositions[i + 1]) // mirar si les posicions son diferents
-               // {
-               //     actualizePositions(ObjectNumberId -1, i);
-               // }//Revisar (fer amb posoicions de hObjects?)
 
             }
 
@@ -97,19 +93,13 @@ public class TempRay : MonoBehaviour
                     return;
 
                 }
-                else if (!newPositions.Contains(planeValue.Value.initPosition) || !newPositions.Contains(planeValue.Value.endPosition))
-                {
-               
-                    actualizePositions(planeValue.Key, vuelta_num);
-                }
-                vuelta_num = vuelta_num + 2;
+                else if (!newPositions.Contains(planeValue.Value.initPosition) || !newPositions.Contains(planeValue.Value.endPosition))//Revisar
+                {                                                                                                                      //Revisar
+                    actualizePositions(planeValue.Key, vuelta_num);                                                                    //Revisar
+                }                                                                                                                      //Revisar
+                vuelta_num = vuelta_num + 2;                                                                                           //Revisar
             }
-
-
-
         }
-        //Debug.Log("Positions: " + newPositions.Count.ToString());
-        Debug.Log("Positions: " + hObjetcs.Count.ToString());
         lastPositions = new List<Vector3>(newPositions);
     }
 
