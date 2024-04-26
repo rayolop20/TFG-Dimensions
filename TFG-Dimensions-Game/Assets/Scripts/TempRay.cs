@@ -5,7 +5,6 @@ using UnityEngine;
 
 public class HitObjects
 {
-    public int id;
     public Vector3 initPosition;
     public Vector3 endPosition;
 }
@@ -84,18 +83,20 @@ public class TempRay : MonoBehaviour
             int vuelta_num = 0;
             foreach (KeyValuePair<int, HitObjects> planeValue in hObjetcs)
             {
+                int _key = planeValue.Key;
                 if (lastPositions.Count > newPositions.Count && !newPositions.Contains(planeValue.Value.initPosition))
                 {
-                    int _key = planeValue.Key;
+ 
                     removedObjects.Add(_key);
                     hObjetcs.Remove(_key);
                     lastPositions = new List<Vector3>(newPositions);
                     return;
 
                 }
-                else if (!newPositions.Contains(planeValue.Value.initPosition) || !newPositions.Contains(planeValue.Value.endPosition))//Revisar
-                {                                                                                                                      //Revisar
-                    actualizePositions(planeValue.Key, vuelta_num);                                                                    //Revisar
+                else if (!newPositions.Contains(planeValue.Value.initPosition) || !newPositions.Contains(planeValue.Value.endPosition) && planeValue.Value.initPosition != newPositions[vuelta_num])//Revisar
+                {                                  
+                    
+                    actualizePositions(_key, vuelta_num);                                                                    //Revisar
                 }                                                                                                                      //Revisar
                 vuelta_num = vuelta_num + 2;                                                                                           //Revisar
             }
