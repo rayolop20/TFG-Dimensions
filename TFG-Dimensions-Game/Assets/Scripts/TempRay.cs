@@ -62,8 +62,35 @@ public class TempRay : MonoBehaviour
 
         //calcular i adegir objectes i posicions noves
 
-        if (newPositions.Count % 2 != 1)
+        if (newPositions.Count % 2 != 1 && lastPositions.Count % 2 != 1 )
         {
+
+            int vuelta_num = 0;
+            foreach (KeyValuePair<int, HitObjects> planeValue in hObjetcs)
+            {
+                int _key = planeValue.Key;
+
+                if (lastPositions.Count > newPositions.Count && !newPositions.Contains(planeValue.Value.initPosition))
+                {
+
+                    removedObjects.Add(_key);
+                    hObjetcs.Remove(_key);
+                    lastPositions = new List<Vector3>(newPositions);
+
+                    Debug.Log("entro");
+                    return;
+
+                }
+                else if(lastPositions.Count == newPositions.Count && (!newPositions.Contains(planeValue.Value.initPosition) || !newPositions.Contains(planeValue.Value.endPosition)) && (newPositions.Count/2) == hObjetcs.Count)
+                //else if (!newPositions.Contains(planeValue.Value.initPosition) || !newPositions.Contains(planeValue.Value.endPosition) && planeValue.Value.initPosition != newPositions[vuelta_num])//Revisar
+                {
+                
+                    hObjetcs[_key].initPosition = newPositions[vuelta_num];
+                    hObjetcs[_key].endPosition = newPositions[vuelta_num + 1];
+                    // actualizePositions(_key, vuelta_num);                                                                    //Revisar
+                }                                                                                                                      //Revisar
+                vuelta_num = vuelta_num + 2;                                                                                           //Revisar
+            }
 
             for (int i = 0; i < newPositions.Count; i += 2)
             {
@@ -77,29 +104,9 @@ public class TempRay : MonoBehaviour
                     lastPositions.Add(newPositions[i + 1]);
                     ObjectNumberId++;
                 }
-
             }
 
-            int vuelta_num = 0;
-            foreach (KeyValuePair<int, HitObjects> planeValue in hObjetcs)
-            {
-                int _key = planeValue.Key;
-                if (lastPositions.Count > newPositions.Count && !newPositions.Contains(planeValue.Value.initPosition))
-                {
- 
-                    removedObjects.Add(_key);
-                    hObjetcs.Remove(_key);
-                    lastPositions = new List<Vector3>(newPositions);
-                    return;
-
-                }
-                else if (!newPositions.Contains(planeValue.Value.initPosition) || !newPositions.Contains(planeValue.Value.endPosition) && planeValue.Value.initPosition != newPositions[vuelta_num])//Revisar
-                {                                  
-                    
-                    actualizePositions(_key, vuelta_num);                                                                    //Revisar
-                }                                                                                                                      //Revisar
-                vuelta_num = vuelta_num + 2;                                                                                           //Revisar
-            }
+        
         }
         lastPositions = new List<Vector3>(newPositions);
     }
