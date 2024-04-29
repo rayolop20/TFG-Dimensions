@@ -1,15 +1,16 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 
-public class HitObjects
-{
-    public Vector3 initPosition;
-    public Vector3 endPosition;
-}
+//public class HitObjects
+//{
+//    public Vector3 initPosition;
+//    public Vector3 endPosition;
+//}
 
-public class TempRay : MonoBehaviour
+public class RayLogic : MonoBehaviour
 {
     // Start is called before the first frame update
 
@@ -22,7 +23,7 @@ public class TempRay : MonoBehaviour
     private List<Vector3> newPositions = new();
     private List<Vector3> lastPositions = new();
     public Dictionary<int, HitObjects> hObjetcs = new();
-    [HideInInspector] public List<int> removedObjects = new();
+    public List<int> removedObjects = new();
     private int ObjectNumberId;
 
 
@@ -62,7 +63,7 @@ public class TempRay : MonoBehaviour
 
         //calcular i adegir objectes i posicions noves
 
-        if (newPositions.Count % 2 != 1 && lastPositions.Count % 2 != 1 )
+        if (newPositions.Count % 2 != 1 && lastPositions.Count % 2 != 1)
         {
 
             int vuelta_num = 0;
@@ -81,9 +82,9 @@ public class TempRay : MonoBehaviour
                     return;
 
                 }
-                else if(lastPositions.Count == newPositions.Count && (!newPositions.Contains(planeValue.Value.initPosition) || !newPositions.Contains(planeValue.Value.endPosition)) && (newPositions.Count/2) == hObjetcs.Count)
-                { 
-                
+                else if (lastPositions.Count == newPositions.Count && (!newPositions.Contains(planeValue.Value.initPosition) || !newPositions.Contains(planeValue.Value.endPosition)) && (newPositions.Count / 2) == hObjetcs.Count)
+                {
+
                     hObjetcs[_key].initPosition = newPositions[vuelta_num];
                     hObjetcs[_key].endPosition = newPositions[vuelta_num + 1];
                     // actualizePositions(_key, vuelta_num);                                                                    //Revisar
@@ -96,7 +97,7 @@ public class TempRay : MonoBehaviour
                 if (lastPositions.Count < newPositions.Count && !lastPositions.Contains(newPositions[i]) && !hObjetcs.ContainsKey(ObjectNumberId) && i % 2 == 0) // comparar si tamany es diferent i el objectes esta creat o no 
                 {
                     HitObjects colidedObject = new HitObjects();
-                    colidedObject.initPosition = newPositions[i ];
+                    colidedObject.initPosition = newPositions[i];
                     colidedObject.endPosition = newPositions[i + 1];
                     hObjetcs.Add(ObjectNumberId, colidedObject);
                     lastPositions.Add(newPositions[i]);
@@ -105,7 +106,7 @@ public class TempRay : MonoBehaviour
                 }
             }
 
-        
+
         }
         lastPositions = new List<Vector3>(newPositions);
     }

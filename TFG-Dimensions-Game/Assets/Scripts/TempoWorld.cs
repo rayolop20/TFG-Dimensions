@@ -50,16 +50,6 @@ public class TempoWorld : MonoBehaviour
                     numberObjects--;
                 }
             }
-            //for (int j = 0; j < rInfo.removedObjects.Count; j++)
-            //{
-            //    if (dictPlanes.ContainsKey(rInfo.removedObjects[j].id))
-            //    {
-            //        Destroy(dictPlanes[rInfo.removedObjects[j].id].gameObject);
-            //        dictPlanes.Remove(j);
-            //        numberObjects--;
-            //    }
-            //}
-
             rInfo.removedObjects.Clear();
         }
 
