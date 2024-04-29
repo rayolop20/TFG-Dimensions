@@ -70,9 +70,10 @@ public class TempRay : MonoBehaviour
             {
                 int _key = planeValue.Key;
 
-                if (lastPositions.Count > newPositions.Count && !newPositions.Contains(planeValue.Value.initPosition))
-                {
 
+                if (hObjetcs.Count > (newPositions.Count/2) && !newPositions.Contains(planeValue.Value.initPosition))
+                //if (lastPositions.Count > newPositions.Count && !newPositions.Contains(planeValue.Value.initPosition))
+                {
                     removedObjects.Add(_key);
                     hObjetcs.Remove(_key);
                     lastPositions = new List<Vector3>(newPositions);
@@ -82,13 +83,10 @@ public class TempRay : MonoBehaviour
 
                 }
                 else if(lastPositions.Count == newPositions.Count && (!newPositions.Contains(planeValue.Value.initPosition) || !newPositions.Contains(planeValue.Value.endPosition)) && (newPositions.Count/2) == hObjetcs.Count)
-                { 
-                
-                    hObjetcs[_key].initPosition = newPositions[vuelta_num];
-                    hObjetcs[_key].endPosition = newPositions[vuelta_num + 1];
-                    // actualizePositions(_key, vuelta_num);                                                                    //Revisar
-                }                                                                                                                      //Revisar
-                vuelta_num = vuelta_num + 2;                                                                                           //Revisar
+                {  
+                     actualizePositions(_key, vuelta_num);                                                                   
+                }                                                                                                            
+                vuelta_num = vuelta_num + 2;                                                                                 
             }
 
             for (int i = 0; i < newPositions.Count; i += 2)
