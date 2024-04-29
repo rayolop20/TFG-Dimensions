@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-public class HitObjects
-{
-    public Vector3 initPosition;
-    public Vector3 endPosition;
-}
+//public class HitObjects
+//{
+//    public Vector3 initPosition;
+//    public Vector3 endPosition;
+//}
 
 public class TempRay : MonoBehaviour
 {
@@ -72,7 +72,6 @@ public class TempRay : MonoBehaviour
 
 
                 if (hObjetcs.Count > (newPositions.Count/2) && !newPositions.Contains(planeValue.Value.initPosition))
-                //if (lastPositions.Count > newPositions.Count && !newPositions.Contains(planeValue.Value.initPosition))
                 {
                     removedObjects.Add(_key);
                     hObjetcs.Remove(_key);

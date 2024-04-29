@@ -4,11 +4,11 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-//public class HitObjects
-//{
-//    public Vector3 initPosition;
-//    public Vector3 endPosition;
-//}
+public class HitObjects
+{
+    public Vector3 initPosition;
+    public Vector3 endPosition;
+}
 
 public class RayLogic : MonoBehaviour
 {
@@ -23,7 +23,7 @@ public class RayLogic : MonoBehaviour
     private List<Vector3> newPositions = new();
     private List<Vector3> lastPositions = new();
     public Dictionary<int, HitObjects> hObjetcs = new();
-    public List<int> removedObjects = new();
+    [HideInInspector] public List<int> removedObjects = new();
     private int ObjectNumberId;
 
 
@@ -71,9 +71,9 @@ public class RayLogic : MonoBehaviour
             {
                 int _key = planeValue.Key;
 
-                if (lastPositions.Count > newPositions.Count && !newPositions.Contains(planeValue.Value.initPosition))
-                {
 
+                if (hObjetcs.Count > (newPositions.Count / 2) && !newPositions.Contains(planeValue.Value.initPosition))
+                {
                     removedObjects.Add(_key);
                     hObjetcs.Remove(_key);
                     lastPositions = new List<Vector3>(newPositions);
@@ -84,12 +84,9 @@ public class RayLogic : MonoBehaviour
                 }
                 else if (lastPositions.Count == newPositions.Count && (!newPositions.Contains(planeValue.Value.initPosition) || !newPositions.Contains(planeValue.Value.endPosition)) && (newPositions.Count / 2) == hObjetcs.Count)
                 {
-
-                    hObjetcs[_key].initPosition = newPositions[vuelta_num];
-                    hObjetcs[_key].endPosition = newPositions[vuelta_num + 1];
-                    // actualizePositions(_key, vuelta_num);                                                                    //Revisar
-                }                                                                                                                      //Revisar
-                vuelta_num = vuelta_num + 2;                                                                                           //Revisar
+                    actualizePositions(_key, vuelta_num);
+                }
+                vuelta_num = vuelta_num + 2;
             }
 
             for (int i = 0; i < newPositions.Count; i += 2)

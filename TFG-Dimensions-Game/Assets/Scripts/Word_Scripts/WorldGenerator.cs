@@ -6,7 +6,6 @@ using UnityEngine;
 
 public class WorldGenerator : MonoBehaviour
 {
-
     public GameObject plane;
     public RayLogic rInfo;
     Dictionary<int, GameObject> dictPlanes = new Dictionary<int, GameObject>();
