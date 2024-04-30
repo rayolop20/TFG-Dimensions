@@ -22,9 +22,12 @@ public class RayLogic : MonoBehaviour
     Vector3 LastHitPosition;
     private List<Vector3> newPositions = new();
     private List<Vector3> lastPositions = new();
+    //public List<GameObject> goInfo = new();
     public Dictionary<int, HitObjects> hObjetcs = new();
     [HideInInspector] public List<int> removedObjects = new();
     private int ObjectNumberId;
+    public GameObject goInfo;
+
 
 
     private void Start()
@@ -39,14 +42,22 @@ public class RayLogic : MonoBehaviour
         hitsCount = 0;
         LastHitPosition = transform.position;
 
+
+        //Ray rayScale = new Ray(transform.position, transform.forward);
+        //RaycastHit[] ScaleY = Physics.RaycastAll(rayScale);
+       // foreach (RaycastHit obj in ScaleY)
+       // {
+       //      goInfo = obj.collider.gameObject;
+       //     //goInfo.Add(hitObject);
+       // }
         //calcular numero de hits del rayo
-        for (int i = 0; i <= hitsCount; i++)
+        for (int i = 0; i <= hitsCount; i++) // es fa perque no se els angles de rotació dels punts
         {
 
-            Ray ray = new Ray(LastHitPosition, transform.forward);
+            Ray rayPointsX = new Ray(LastHitPosition, transform.forward);
             RaycastHit hitInfo;
 
-            if (Physics.Raycast(ray, out hitInfo, rayLength))
+            if (Physics.Raycast(rayPointsX, out hitInfo, rayLength))
             {
                 hitsCount++; // suma quan fa hit
                 Vector3 roundedPoint = new Vector3((float)Math.Round(hitInfo.point.x, 2),

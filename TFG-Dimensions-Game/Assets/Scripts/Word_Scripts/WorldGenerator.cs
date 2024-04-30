@@ -61,8 +61,7 @@ public class WorldGenerator : MonoBehaviour
             {
                 int index = item.Key; // Clave del diccionario
                 GameObject plane = item.Value; //valor de dintre
-                float scale = getObjectScale(index);
-                //float scale = rInfo.hObjetcs[index].endPosition.z - rInfo.hObjetcs[index].initPosition.z;
+                float scale = getObjectScale(index); 
                 float position = getObjectPos2D(scale);
                 UpdateFloor(plane, index, scale, position);
             }
@@ -82,7 +81,7 @@ public class WorldGenerator : MonoBehaviour
     private void UpdateFloor(GameObject planes, int number, float scale, float position)
     {
         planes.layer = LayerMask.NameToLayer("2D");
-        planes.transform.position = new Vector3(0, 0, rInfo.hObjetcs[number].initPosition.z + position);
-        planes.transform.localScale = new Vector3(plane.transform.localScale.x / 10, 1, scale / 10); //scale units 1 position = 10 scale
+        planes.transform.position = new Vector3(rInfo.hObjetcs[number].initPosition.x, rInfo.hObjetcs[number].initPosition.y, rInfo.hObjetcs[number].initPosition.z + position);
+        planes.transform.localScale = new Vector3(rInfo.goInfo.transform.localScale.y / 10, 1, scale / 10); //scale units 1 position = 10 scale
     }
 }
