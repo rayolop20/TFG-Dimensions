@@ -43,7 +43,7 @@ public class RayLogic : MonoBehaviour
         for (int i = 0; i <= hitsCount; i++)
         {
 
-            Ray ray = new Ray(LastHitPosition, transform.forward);
+            Ray ray = new Ray(LastHitPosition, transform.right);
             RaycastHit hitInfo;
 
             if (Physics.Raycast(ray, out hitInfo, rayLength))
@@ -55,8 +55,8 @@ public class RayLogic : MonoBehaviour
 
                 newPositions.Add(roundedPoint);
 
-                LastHitPosition = roundedPoint + new Vector3(0, 0, 0.01f); // + 0.01 per no tornar a colisionar
-                Debug.DrawRay(LastHitPosition, transform.forward * hitInfo.distance, Color.red);
+                LastHitPosition = roundedPoint + new Vector3(0.01f, 0, 0); // + 0.01 per no tornar a colisionar
+                Debug.DrawRay(LastHitPosition, transform.right * hitInfo.distance, Color.red);
             }
         }
 
@@ -111,7 +111,7 @@ public class RayLogic : MonoBehaviour
     private void OnDrawGizmos()
     {
         Gizmos.color = Color.red;
-        Gizmos.DrawRay(transform.position, transform.forward * rayLength);
+        Gizmos.DrawRay(transform.position, transform.right * rayLength);
     }
 
     private void actualizePositions(int objectId, int listNum)

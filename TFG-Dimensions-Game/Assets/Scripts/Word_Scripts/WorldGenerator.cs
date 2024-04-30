@@ -28,7 +28,7 @@ public class WorldGenerator : MonoBehaviour
             {
                 if (numberObjects < rInfo.hObjetcs.Count && !dictPlanes.ContainsKey(g.Key))
                 {
-                    GameObject newPlane = Instantiate(plane, Vector3.zero, Quaternion.Euler(0, 0, -90));
+                    GameObject newPlane = Instantiate(plane, Vector3.zero, Quaternion.Euler(-90, 0, 0));
                     dictPlanes.Add(g.Key, newPlane);
 
                     //planeList.Add(newPlanesobj);
@@ -71,7 +71,7 @@ public class WorldGenerator : MonoBehaviour
 
     private float getObjectScale(int numobj)
     {
-        float scale = rInfo.hObjetcs[numobj].endPosition.z - rInfo.hObjetcs[numobj].initPosition.z;
+        float scale = rInfo.hObjetcs[numobj].endPosition.x - rInfo.hObjetcs[numobj].initPosition.x;
         return scale;
     }
     private float getObjectPos2D(float scale)
@@ -82,7 +82,7 @@ public class WorldGenerator : MonoBehaviour
     private void UpdateFloor(GameObject planes, int number, float scale, float position)
     {
         planes.layer = LayerMask.NameToLayer("2D");
-        planes.transform.position = new Vector3(0, 0, rInfo.hObjetcs[number].initPosition.z + position);
-        planes.transform.localScale = new Vector3(plane.transform.localScale.x / 10, 1, scale / 10); //scale units 1 position = 10 scale
+        planes.transform.position = new Vector3(rInfo.hObjetcs[number].initPosition.x + position, 0, 0);
+        planes.transform.localScale = new Vector3(scale / 10, 1, plane.transform.localScale.z / 10); //scale units 1 position = 10 scale
     }
 }

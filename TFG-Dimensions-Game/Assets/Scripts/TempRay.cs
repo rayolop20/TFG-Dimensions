@@ -11,9 +11,6 @@ using UnityEngine;
 
 public class TempRay : MonoBehaviour
 {
-    // Start is called before the first frame update
-
-
     public float rayLength = 10f; // Longitud del rayo
 
 
@@ -42,7 +39,7 @@ public class TempRay : MonoBehaviour
         for (int i = 0; i <= hitsCount; i++)
         {
 
-            Ray ray = new Ray(LastHitPosition, transform.forward);
+            Ray ray = new Ray(LastHitPosition, transform.right);
             RaycastHit hitInfo;
 
             if (Physics.Raycast(ray, out hitInfo, rayLength))
@@ -54,15 +51,15 @@ public class TempRay : MonoBehaviour
 
                 newPositions.Add(roundedPoint);
 
-                LastHitPosition = roundedPoint + new Vector3(0, 0, 0.01f); // + 0.01 per no tornar a colisionar
-                Debug.DrawRay(LastHitPosition, transform.forward * hitInfo.distance, Color.red);
+                LastHitPosition = roundedPoint + new Vector3(0.01f, 0, 0); // + 0.01 per no tornar a colisionar
+                Debug.DrawRay(LastHitPosition, transform.right * hitInfo.distance, Color.red);
             }
         }
 
 
         //calcular i adegir objectes i posicions noves
 
-        if (newPositions.Count % 2 != 1 && lastPositions.Count % 2 != 1 )
+        if (newPositions.Count % 2 != 1 && lastPositions.Count % 2 != 1)
         {
 
             int vuelta_num = 0;
@@ -71,7 +68,7 @@ public class TempRay : MonoBehaviour
                 int _key = planeValue.Key;
 
 
-                if (hObjetcs.Count > (newPositions.Count/2) && !newPositions.Contains(planeValue.Value.initPosition))
+                if (hObjetcs.Count > (newPositions.Count / 2) && !newPositions.Contains(planeValue.Value.initPosition))
                 {
                     removedObjects.Add(_key);
                     hObjetcs.Remove(_key);
@@ -81,11 +78,11 @@ public class TempRay : MonoBehaviour
                     return;
 
                 }
-                else if(lastPositions.Count == newPositions.Count && (!newPositions.Contains(planeValue.Value.initPosition) || !newPositions.Contains(planeValue.Value.endPosition)) && (newPositions.Count/2) == hObjetcs.Count)
-                {  
-                     actualizePositions(_key, vuelta_num);                                                                   
-                }                                                                                                            
-                vuelta_num = vuelta_num + 2;                                                                                 
+                else if (lastPositions.Count == newPositions.Count && (!newPositions.Contains(planeValue.Value.initPosition) || !newPositions.Contains(planeValue.Value.endPosition)) && (newPositions.Count / 2) == hObjetcs.Count)
+                {
+                    actualizePositions(_key, vuelta_num);
+                }
+                vuelta_num = vuelta_num + 2;
             }
 
             for (int i = 0; i < newPositions.Count; i += 2)
@@ -93,7 +90,7 @@ public class TempRay : MonoBehaviour
                 if (lastPositions.Count < newPositions.Count && !lastPositions.Contains(newPositions[i]) && !hObjetcs.ContainsKey(ObjectNumberId) && i % 2 == 0) // comparar si tamany es diferent i el objectes esta creat o no 
                 {
                     HitObjects colidedObject = new HitObjects();
-                    colidedObject.initPosition = newPositions[i ];
+                    colidedObject.initPosition = newPositions[i];
                     colidedObject.endPosition = newPositions[i + 1];
                     hObjetcs.Add(ObjectNumberId, colidedObject);
                     lastPositions.Add(newPositions[i]);
@@ -102,7 +99,7 @@ public class TempRay : MonoBehaviour
                 }
             }
 
-        
+
         }
         lastPositions = new List<Vector3>(newPositions);
     }
@@ -110,7 +107,7 @@ public class TempRay : MonoBehaviour
     private void OnDrawGizmos()
     {
         Gizmos.color = Color.red;
-        Gizmos.DrawRay(transform.position, transform.forward * rayLength);
+        Gizmos.DrawRay(transform.position, transform.right * rayLength);
     }
 
     private void actualizePositions(int objectId, int listNum)
