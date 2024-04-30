@@ -83,6 +83,6 @@ public class WorldGenerator : MonoBehaviour
     {
         planes.layer = LayerMask.NameToLayer("2D");
         planes.transform.position = new Vector3(rInfo.hObjetcs[number].initPosition.x + position, 0, 0);
-        planes.transform.localScale = new Vector3(scale / 10, 1, plane.transform.localScale.z / 10); //scale units 1 position = 10 scale
+        planes.transform.localScale = new Vector3(scale / 10, 1, rInfo.goInfo.transform.localScale.y / 10); //scale units 1 position = 10 scale
     }
 }

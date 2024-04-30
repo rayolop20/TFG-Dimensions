@@ -25,6 +25,7 @@ public class RayLogic : MonoBehaviour
     public Dictionary<int, HitObjects> hObjetcs = new();
     [HideInInspector] public List<int> removedObjects = new();
     private int ObjectNumberId;
+    public GameObject goInfo;
 
 
     private void Start()
@@ -38,6 +39,14 @@ public class RayLogic : MonoBehaviour
         newPositions.Clear();
         hitsCount = 0;
         LastHitPosition = transform.position;
+
+        Ray rayScale = new Ray(transform.position, transform.right);
+        RaycastHit[] ScaleY = Physics.RaycastAll(rayScale);
+         foreach (RaycastHit obj in ScaleY)
+         {
+              goInfo = obj.collider.gameObject;
+             //goInfo.Add(hitObject);
+         }
 
         //calcular numero de hits del rayo
         for (int i = 0; i <= hitsCount; i++)
@@ -55,7 +64,7 @@ public class RayLogic : MonoBehaviour
 
                 newPositions.Add(roundedPoint);
 
-                LastHitPosition = roundedPoint + new Vector3(0.01f, 0, 0); // + 0.01 per no tornar a colisionar
+                LastHitPosition = hitInfo.point + new Vector3(0.01f, 0, 0); // + 0.01 per no tornar a colisionar
                 Debug.DrawRay(LastHitPosition, transform.right * hitInfo.distance, Color.red);
             }
         }
