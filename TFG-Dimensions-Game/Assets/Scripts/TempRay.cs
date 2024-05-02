@@ -35,6 +35,12 @@ public class TempRay : MonoBehaviour
         hitsCount = 0;
         LastHitPosition = transform.position;
 
+        RaycastHit[] Ray1;
+        RaycastHit[] Ray2;
+        Vector3 origin = new Vector3(10,0,0);
+        Ray1 = Physics.RaycastAll(origin,transform.right);
+        Ray2 = Physics.RaycastAll(-origin,-transform.right);
+
         //calcular numero de hits del rayo
         for (int i = 0; i <= hitsCount; i++)
         {

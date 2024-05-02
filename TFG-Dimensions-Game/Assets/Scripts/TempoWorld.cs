@@ -81,7 +81,7 @@ public class TempoWorld : MonoBehaviour
     private void UpdateFloor(GameObject planes, int number, float scale, float position)
     {
         planes.layer = LayerMask.NameToLayer("2D");
-        planes.transform.position = new Vector3(rInfo.hObjetcs[number].initPosition.x + position, 0, 0);
+        planes.transform.position = new Vector3(rInfo.hObjetcs[number].initPosition.x + position, rInfo.hObjetcs[number].initPosition.y, rInfo.hObjetcs[number].initPosition.z);
         planes.transform.localScale = new Vector3(scale / 10, 1, plane.transform.localScale.z/10); //scale units 1 position = 10 scale
     }
 }

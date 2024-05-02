@@ -43,9 +43,9 @@ public class RayLogic : MonoBehaviour
         RaycastHit[] ScaleY = Physics.RaycastAll(rayScale);
         ScaleY = ScaleY.OrderBy(hit => hit.distance).ToArray();
         foreach (RaycastHit obj in ScaleY)
-         {
-                goInfo.Add(obj.collider.gameObject);
-         }
+        {
+               goInfo.Add(obj.collider.gameObject);
+        }
 
         //calcular numero de hits del rayo
         for (int i = 0; i <= hitsCount; i++)
