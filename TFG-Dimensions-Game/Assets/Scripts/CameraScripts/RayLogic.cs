@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using static UnityEngine.UI.Image;
 
 
 public class HitObjects
@@ -14,15 +15,17 @@ public class HitObjects
 
 public class RayLogic : MonoBehaviour
 {
-    public float rayLength = 10f; // Longitud del rayo
-    int hitsCount = 0;
-    Vector3 LastHitPosition;
+    private float rayLenght = 20f;
+    RaycastHit[] RayEsquerra;
+    RaycastHit[] RayDreta;
+
     private List<Vector3> newPositions = new();
     private List<Vector3> lastPositions = new();
     public List<GameObject> goInfo = new();
     public Dictionary<int, HitObjects> hObjetcs = new();
     [HideInInspector] public List<int> removedObjects = new();
     private int ObjectNumberId;
+    public Vector3 origin = new Vector3(10, 0, 0);
 
 
 
@@ -36,9 +39,8 @@ public class RayLogic : MonoBehaviour
     {
         newPositions.Clear();
         goInfo.Clear();
-        hitsCount = 0;
-        LastHitPosition = transform.position;
-
+        RayCalculations();
+       
         Ray rayScale = new Ray(transform.position, transform.right);
         RaycastHit[] ScaleY = Physics.RaycastAll(rayScale);
         ScaleY = ScaleY.OrderBy(hit => hit.distance).ToArray();
@@ -48,24 +50,18 @@ public class RayLogic : MonoBehaviour
         }
 
         //calcular numero de hits del rayo
-        for (int i = 0; i <= hitsCount; i++)
+        for (int i = 0; i < RayEsquerra.Count(); i++)
         {
+            Vector3 roundedPointEsquerra = new Vector3((float)Math.Round(RayEsquerra[i].point.x, 2),
+                                                  (float)Math.Round(RayEsquerra[i].point.y, 2),
+                                                  (float)Math.Round(RayEsquerra[i].point.z, 2));
 
-            Ray ray = new Ray(LastHitPosition, transform.right);
-            RaycastHit hitInfo;
+            Vector3 roundedPointDreta = new Vector3((float)Math.Round(RayDreta[i].point.x, 2),
+                                                  (float)Math.Round(RayDreta[i].point.y, 2),
+                                                  (float)Math.Round(RayDreta[i].point.z, 2));
 
-            if (Physics.Raycast(ray, out hitInfo, rayLength))
-            {
-                hitsCount++; // suma quan fa hit
-                Vector3 roundedPoint = new Vector3((float)Math.Round(hitInfo.point.x, 2),
-                                                   (float)Math.Round(hitInfo.point.y, 2),
-                                                   (float)Math.Round(hitInfo.point.z, 2));
-
-                newPositions.Add(roundedPoint);
-
-                LastHitPosition = hitInfo.point + new Vector3(0.01f, 0, 0); // + 0.01 per no tornar a colisionar
-                Debug.DrawRay(LastHitPosition, transform.right * hitInfo.distance, Color.red);
-            }
+            newPositions.Add(roundedPointEsquerra);
+            newPositions.Add(roundedPointDreta);
         }
 
 
@@ -122,7 +118,9 @@ public class RayLogic : MonoBehaviour
     private void OnDrawGizmos()
     {
         Gizmos.color = Color.red;
-        Gizmos.DrawRay(transform.position, transform.right * rayLength);
+        Gizmos.DrawRay(gameObject.transform.position - origin, transform.right * rayLenght);
+        Gizmos.color = Color.blue;
+        Gizmos.DrawRay(new Vector3(10, 2, 0), -transform.right * rayLenght);
     }
 
     private void actualizePositions(int objectId, int listNum)
@@ -130,5 +128,14 @@ public class RayLogic : MonoBehaviour
         hObjetcs[objectId].initPosition = newPositions[listNum];
         hObjetcs[objectId].endPosition = newPositions[listNum + 1];
     //    hObjetcs[objectId].endPosition = newPositions[listNum]; // falta acutalitzar
+    }
+
+    private void RayCalculations() {
+        RayEsquerra = Physics.RaycastAll(gameObject.transform.position - origin, transform.right, rayLenght); // esquerra
+        RayDreta = Physics.RaycastAll(gameObject.transform.position + origin, -transform.right, rayLenght); // dreta
+        RayEsquerra = RayEsquerra.OrderBy(hit => hit.distance).ToArray();
+        RayDreta = RayDreta.OrderBy(hit => hit.distance).ToArray();
+        Array.Reverse(RayDreta);
+
     }
 }

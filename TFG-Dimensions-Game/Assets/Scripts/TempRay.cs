@@ -1,6 +1,10 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using UnityEditor.PackageManager;
 using UnityEngine;
+using UnityEngine.UIElements;
+using static UnityEngine.GraphicsBuffer;
 
 
 //public class HitObjects
@@ -11,16 +15,24 @@ using UnityEngine;
 
 public class TempRay : MonoBehaviour
 {
-    public float rayLength = 10f; // Longitud del rayo
+
+    public Transform target;
+    private float orbitRadius = 10f; //distancia del centre
 
 
+    private float rayLenght  = 20f;
     int hitsCount = 0;
-    Vector3 LastHitPosition;
+    private Vector3 LastHitPosition;
+    private RaycastHit[] RayEsquerra;
+    private RaycastHit[] RayDreta;
+
     private List<Vector3> newPositions = new();
     private List<Vector3> lastPositions = new();
+    public List<GameObject> goInfo = new();
     public Dictionary<int, HitObjects> hObjetcs = new();
     [HideInInspector] public List<int> removedObjects = new();
     private int ObjectNumberId;
+    public Vector3 origin = new Vector3(10, 0, 0);
 
 
     private void Start()
@@ -35,32 +47,76 @@ public class TempRay : MonoBehaviour
         hitsCount = 0;
         LastHitPosition = transform.position;
 
-        RaycastHit[] Ray1;
-        RaycastHit[] Ray2;
-        Vector3 origin = new Vector3(10,0,0);
-        Ray1 = Physics.RaycastAll(origin,transform.right);
-        Ray2 = Physics.RaycastAll(-origin,-transform.right);
+        Vector3 rayPositionEsquerra = target.TransformPoint(-Vector3.right * orbitRadius); // vermell (esquerra cap a dreta)
+        // Calcular la dirección del rayo hacia el objetivo
+        Vector3 directionEsquerra = (target.position - rayPositionEsquerra).normalized;
+        RayEsquerra = Physics.RaycastAll(rayPositionEsquerra, directionEsquerra, rayLenght); // esquerra
+        Debug.DrawRay(rayPositionEsquerra, directionEsquerra * rayLenght, Color.red);
+
+        Vector3 rayPositionDreta = target.TransformPoint(Vector3.right * orbitRadius); // vermell (esquerra cap a dreta)
+        // Calcular la dirección del rayo hacia el objetivo
+        Vector3 directionDreta = (target.position - rayPositionDreta).normalized;
+        RayDreta = Physics.RaycastAll(rayPositionDreta, directionDreta, rayLenght); // dreta
+        Debug.DrawRay(new Vector3(rayPositionDreta.x, rayPositionDreta.y + 1, rayPositionDreta.z), directionDreta * rayLenght, Color.blue);
+
+        RayEsquerra = RayEsquerra.OrderBy(hit => hit.distance).ToArray();
+        RayDreta = RayDreta.OrderBy(hit => hit.distance).ToArray();
+        Array.Reverse(RayDreta);
+
+
+        for (int i = 0; i < RayEsquerra.Count(); i++)
+        {
+            Vector3 roundedPointEsquerra = new Vector3((float)Math.Round(RayEsquerra[i].point.x, 2),
+                                                  (float)Math.Round(RayEsquerra[i].point.y, 2),
+                                                  (float)Math.Round(RayEsquerra[i].point.z, 2));
+
+            Vector3 roundedPointDreta = new Vector3((float)Math.Round(RayDreta[i].point.x, 2),
+                                                  (float)Math.Round(RayDreta[i].point.y, 2),
+                                                  (float)Math.Round(RayDreta[i].point.z, 2));
+
+            newPositions.Add(roundedPointEsquerra);
+            newPositions.Add(roundedPointDreta);
+        }
+
+        //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+        //foreach (RaycastHit hitInfo in RayEsquerra)
+        //{
+        //    Vector3 roundedPointEsquerra = new Vector3((float)Math.Round(hitInfo.point.x, 2),
+        //                                          (float)Math.Round(hitInfo.point.y, 2),
+        //                                          (float)Math.Round(hitInfo.point.z, 2));
+        //    
+        //    Vector3 roundedPointDreta = new Vector3((float)Math.Round(hitInfo.point.x, 2),
+        //                                          (float)Math.Round(hitInfo.point.y, 2),
+        //                                          (float)Math.Round(hitInfo.point.z, 2));
+        //
+        //   newPositions.Add(roundedPointEsquerra);
+        //   newPositions.Add(roundedPointDreta);
+        //}
+
+        //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
         //calcular numero de hits del rayo
-        for (int i = 0; i <= hitsCount; i++)
-        {
-
-            Ray ray = new Ray(LastHitPosition, transform.right);
-            RaycastHit hitInfo;
-
-            if (Physics.Raycast(ray, out hitInfo, rayLength))
-            {
-                hitsCount++; // suma quan fa hit
-                Vector3 roundedPoint = new Vector3((float)Math.Round(hitInfo.point.x, 2),
-                                                   (float)Math.Round(hitInfo.point.y, 2),
-                                                   (float)Math.Round(hitInfo.point.z, 2));
-
-                newPositions.Add(roundedPoint);
-
-                LastHitPosition = roundedPoint + new Vector3(0.01f, 0, 0); // + 0.01 per no tornar a colisionar
-                Debug.DrawRay(LastHitPosition, transform.right * hitInfo.distance, Color.red);
-            }
-        }
+        //  for (int i = 0; i <= hitsCount; i++)
+        //  {
+        //
+        //      Ray ray = new Ray(LastHitPosition, transform.right);
+        //      RaycastHit hitInfo;
+        //
+        //      if (Physics.Raycast(ray, out hitInfo, rayLength))
+        //      {
+        //          hitsCount++; // suma quan fa hit
+        //          Vector3 roundedPoint = new Vector3((float)Math.Round(hitInfo.point.x, 2),
+        //                                             (float)Math.Round(hitInfo.point.y, 2),
+        //                                             (float)Math.Round(hitInfo.point.z, 2));
+        //
+        //          newPositions.Add(roundedPoint);
+        //
+        //          LastHitPosition = roundedPoint + new Vector3(0.01f, 0, 0); // + 0.01 per no tornar a colisionar
+        //          Debug.DrawRay(LastHitPosition, transform.right * hitInfo.distance, Color.red);
+        //      }
+        //  }
 
 
         //calcular i adegir objectes i posicions noves
@@ -112,8 +168,19 @@ public class TempRay : MonoBehaviour
 
     private void OnDrawGizmos()
     {
-        Gizmos.color = Color.red;
-        Gizmos.DrawRay(transform.position, transform.right * rayLength);
+      //  // Obtener la posición del rayo en función de la rotación del objetivo
+      //  Vector3 rayPosition = target.TransformPoint(-Vector3.right * orbitRadius); // vermell (esquerra cap a dreta)
+      //  // Calcular la dirección del rayo hacia el objetivo
+      //  Vector3 direction = (target.position - rayPosition).normalized;
+      //  // Dibujar el rayo utilizando Debug.DrawRay
+      //  Debug.DrawRay(rayPosition, direction * 20f, Color.red);
+      //
+      //  // Obtener la posición del rayo en función de la rotación del objetivo
+      //  Vector3 rayPosition2 = target.TransformPoint(Vector3.right * orbitRadius); // blau (dreta a esquerra)
+      //  // Calcular la dirección del rayo hacia el objetivo
+      //  Vector3 direction2 = (target.position - rayPosition2).normalized;
+      //  // Dibujar el rayo utilizando Debug.DrawRay
+      //  Debug.DrawRay(new Vector3(rayPosition2.x, rayPosition2.y + 1, rayPosition2.z), direction2 * 20f, Color.blue);
     }
 
     private void actualizePositions(int objectId, int listNum)
