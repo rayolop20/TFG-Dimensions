@@ -8,16 +8,14 @@ public class TempoWorld : MonoBehaviour
     public GameObject plane;
     public TempRay rInfo;
     Dictionary<int, GameObject> dictPlanes = new Dictionary<int, GameObject>();
-    //List<GamePlanes> planeList = new ();
 
     int numberObjects;
-    // Start is called before the first frame update
+
     void Start()
     {
 
     }
 
-    // Update is called once per frame
     void Update()
     {
 
@@ -29,29 +27,23 @@ public class TempoWorld : MonoBehaviour
                 {
                     GameObject newPlane = Instantiate(plane, Vector3.zero, Quaternion.Euler(-90, 0, 0));
                     dictPlanes.Add(g.Key, newPlane);
-
-                    //planeList.Add(newPlanesobj);
                     numberObjects++;
                 }
             }
-            for (int i = 0; i < rInfo.hObjetcs.Count; i++)
-            {
-
-            }
-        }// revisar
+        }
 
         if (numberObjects > rInfo.hObjetcs.Count)
         {
-            foreach (int value in rInfo.removedObjects)
+            foreach (KeyValuePair<int, GameObject> removed in dictPlanes)
             {
-                if (dictPlanes.ContainsKey(value))
+                if (!rInfo.hObjetcs.ContainsKey(removed.Key))
                 {
-                    Destroy(dictPlanes[value].gameObject);
-                    dictPlanes.Remove(value);
+                    Destroy(dictPlanes[removed.Key].gameObject);
+                    dictPlanes.Remove(removed.Key);
                     numberObjects--;
+                    return;
                 }
             }
-            rInfo.removedObjects.Clear();
         }
 
         if (numberObjects == rInfo.hObjetcs.Count)
@@ -82,6 +74,6 @@ public class TempoWorld : MonoBehaviour
     {
         planes.layer = LayerMask.NameToLayer("2D");
         planes.transform.position = new Vector3(rInfo.hObjetcs[number].initPosition.x + position, rInfo.hObjetcs[number].initPosition.y, rInfo.hObjetcs[number].initPosition.z);
-        planes.transform.localScale = new Vector3(scale / 10, 1, plane.transform.localScale.z/10); //scale units 1 position = 10 scale
+        planes.transform.localScale = new Vector3(scale / 10, 1, plane.transform.localScale.z / 10);//new Vector3(scale / 10, 1, rInfo.hObjetcs[number].goScale.y / 10); //scale units 1 position = 10 scale
     }
 }

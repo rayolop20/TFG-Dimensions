@@ -12,6 +12,7 @@ public class HitObjects
     public Vector3 initPosition;
     public Vector3 endPosition;
     public Vector3 goScale;
+    public int id;
 }
 
 public class RayLogic : MonoBehaviour

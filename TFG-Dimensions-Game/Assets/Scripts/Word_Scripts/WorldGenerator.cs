@@ -35,16 +35,16 @@ public class WorldGenerator : MonoBehaviour
 
         if (numberObjects > rInfo.hObjetcs.Count)
         {
-            foreach (int value in rInfo.removedObjects)
+            foreach (KeyValuePair<int, GameObject> removed in dictPlanes)
             {
-                if (dictPlanes.ContainsKey(value))
+                if (!rInfo.hObjetcs.ContainsKey(removed.Key))
                 {
-                    Destroy(dictPlanes[value].gameObject);
-                    dictPlanes.Remove(value);
+                    Destroy(dictPlanes[removed.Key].gameObject);
+                    dictPlanes.Remove(removed.Key);
                     numberObjects--;
+                    return;
                 }
             }
-            rInfo.removedObjects.Clear();
         }
 
         if (numberObjects == rInfo.hObjetcs.Count)
