@@ -188,4 +188,7 @@ public class TempRay : MonoBehaviour
         hObjetcs[objectId].initPosition = newPositions[listNum];
         hObjetcs[objectId].endPosition = newPositions[listNum + 1];
     }
+
+
+
 }

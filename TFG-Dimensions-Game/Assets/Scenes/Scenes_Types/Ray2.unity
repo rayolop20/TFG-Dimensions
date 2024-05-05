@@ -552,7 +552,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   target: {fileID: 1617523015}
-  orbitRadius: 10
   goInfo: []
   removedObjects: 
   origin: {x: 10, y: 0, z: 0}
@@ -601,7 +600,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   plane: {fileID: 8707016464985655357, guid: f870c72c33dc79e4f9bb3558f48d3b54, type: 3}
-  rInfo: {fileID: 0}
+  rInfo: {fileID: 1259717909}
 --- !u!1 &1560532699
 GameObject:
   m_ObjectHideFlags: 0
