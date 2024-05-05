@@ -280,7 +280,7 @@ Transform:
   m_GameObject: {fileID: 266685790}
   m_LocalRotation: {x: -0, y: -0.11848581, z: -0, w: 0.99295574}
   m_LocalPosition: {x: 2.44, y: 0, z: 0.12}
-  m_LocalScale: {x: 1, y: 1, z: 2.7464}
+  m_LocalScale: {x: 1, y: 2.1332, z: 2.7464}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -552,7 +552,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   target: {fileID: 1259717908}
-  goInfo: []
 --- !u!1 &1285239166
 GameObject:
   m_ObjectHideFlags: 0

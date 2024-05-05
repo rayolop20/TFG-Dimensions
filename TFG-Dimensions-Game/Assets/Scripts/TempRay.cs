@@ -24,14 +24,12 @@ public class TempRay : MonoBehaviour
 
     private Dictionary<int, Tuple<Vector3, Vector3>> newPositions = new();
     private Dictionary<int, Tuple<Vector3, Vector3>> lastPositions = new();
-    [HideInInspector] public List<GameObject> goInfo = new();
+    [HideInInspector] public Dictionary<int, Vector3> goInfo = new();
     public Dictionary<int, HitObjects> hObjetcs = new();
-
-
-
 
     private void Start()
     {
+
     }
     void Update()
     {
@@ -42,11 +40,6 @@ public class TempRay : MonoBehaviour
         Ray rayScale = new Ray(transform.position, transform.right);
         RaycastHit[] ScaleY = Physics.RaycastAll(rayScale);
         ScaleY = ScaleY.OrderBy(hit => hit.distance).ToArray();
-        foreach (RaycastHit obj in ScaleY)
-        {
-            goInfo.Add(obj.collider.gameObject);
-        }
-
 
         PositionCreationRay();
 
@@ -62,12 +55,12 @@ public class TempRay : MonoBehaviour
                                                   (float)Math.Round(RayDreta[i].point.z, 2));
 
             newPositions.Add(RayEsquerra[i].collider.gameObject.GetInstanceID(), Tuple.Create(roundedPointEsquerra, roundedPointDreta));
+            goInfo.Add(RayEsquerra[i].collider.gameObject.GetInstanceID(), ScaleY[i].collider.gameObject.transform.localScale);
         }
 
 
 
         //calcular i adegir objectes i posicions noves
-        int vuelta_num = 0;
         foreach (KeyValuePair<int, HitObjects> planeValue in hObjetcs)
         {
             if (hObjetcs.Count > newPositions.Count && !newPositions.ContainsKey(planeValue.Key)) //Eliminar elements
@@ -82,6 +75,8 @@ public class TempRay : MonoBehaviour
                 actualizePositions(planeValue.Key);
             }
 
+            hObjetcs[planeValue.Key].goScale = goInfo[planeValue.Key]; // actualitzar escala
+
 
         }
         foreach (KeyValuePair<int, Tuple<Vector3, Vector3>> positions in newPositions)
@@ -91,7 +86,7 @@ public class TempRay : MonoBehaviour
                 HitObjects colidedObject = new HitObjects();
                 colidedObject.initPosition = positions.Value.Item1;
                 colidedObject.endPosition = positions.Value.Item2;
-                //   colidedObject.goScale = goInfo[volta].transform.localScale;
+                colidedObject.goScale = goInfo[positions.Key];
                 hObjetcs.Add(positions.Key, colidedObject);
             }
         }
@@ -127,7 +122,6 @@ public class TempRay : MonoBehaviour
     {
         hObjetcs[objectId].initPosition = newPositions[objectId].Item1;
         hObjetcs[objectId].endPosition = newPositions[objectId].Item2;
-        //hObjetcs[objectId].endPosition = newPositions[listNum]; // falta acutalitzar
     }
 
 
