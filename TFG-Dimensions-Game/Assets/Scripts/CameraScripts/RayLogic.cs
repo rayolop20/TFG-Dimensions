@@ -11,7 +11,7 @@ public class HitObjects
 {
     public Vector3 initPosition;
     public Vector3 endPosition;
-    public Vector3 goScale;
+    public GameObject goGeneralVariables;
     public int id;
 }
 
@@ -24,8 +24,8 @@ public class RayLogic : MonoBehaviour
     RaycastHit[] RayEsquerra;
     RaycastHit[] RayDreta;
 
-    private Dictionary<int, Tuple<Vector3, Vector3, Vector3>> newPositions = new();
-    private Dictionary<int, Tuple<Vector3, Vector3, Vector3>> lastPositions = new();
+    private Dictionary<int, Tuple<Vector3, Vector3, GameObject>> newPositions = new();
+    private Dictionary<int, Tuple<Vector3, Vector3, GameObject>> lastPositions = new();
     public Dictionary<int, HitObjects> hObjetcs = new();
 
     private void Start()
@@ -49,7 +49,7 @@ public class RayLogic : MonoBehaviour
                                                   (float)Math.Round(RayDreta[i].point.y, 2),
                                                   (float)Math.Round(RayDreta[i].point.z, 2));
 
-            newPositions.Add(RayEsquerra[i].collider.gameObject.GetInstanceID(), Tuple.Create(roundedPointEsquerra, roundedPointDreta, RayEsquerra[i].collider.gameObject.transform.localScale));
+            newPositions.Add(RayEsquerra[i].collider.gameObject.GetInstanceID(), Tuple.Create(roundedPointEsquerra, roundedPointDreta, RayEsquerra[i].collider.gameObject));
  
         }
 
@@ -71,18 +71,18 @@ public class RayLogic : MonoBehaviour
                 actualizePositions(planeValue.Key);
             }
 
-            hObjetcs[planeValue.Key].goScale = newPositions[planeValue.Key].Item3; // actualitzar escala
+            hObjetcs[planeValue.Key].goGeneralVariables = newPositions[planeValue.Key].Item3; // actualitzar escala
 
 
         }
-        foreach (KeyValuePair<int, Tuple<Vector3, Vector3, Vector3>> positions in newPositions)
+        foreach (KeyValuePair<int, Tuple<Vector3, Vector3, GameObject>> positions in newPositions)
         {
             if (lastPositions.Count < newPositions.Count && !lastPositions.ContainsKey(positions.Key)) // comparar si tamany es diferent i el objectes esta creat o no 
             {
                 HitObjects colidedObject = new HitObjects();
                 colidedObject.initPosition = positions.Value.Item1;
                 colidedObject.endPosition = positions.Value.Item2;
-                colidedObject.goScale = positions.Value.Item3;
+                colidedObject.goGeneralVariables = positions.Value.Item3;
                 hObjetcs.Add(positions.Key, colidedObject);
             }
         }

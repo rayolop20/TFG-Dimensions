@@ -22,9 +22,8 @@ public class TempRay : MonoBehaviour
     RaycastHit[] RayEsquerra;
     RaycastHit[] RayDreta;
 
-    private Dictionary<int, Tuple<Vector3, Vector3>> newPositions = new();
-    private Dictionary<int, Tuple<Vector3, Vector3>> lastPositions = new();
-    [HideInInspector] public Dictionary<int, Vector3> goInfo = new();
+    private Dictionary<int, Tuple<Vector3, Vector3, GameObject>> newPositions = new();
+    private Dictionary<int, Tuple<Vector3, Vector3, GameObject>> lastPositions = new();
     public Dictionary<int, HitObjects> hObjetcs = new();
 
     private void Start()
@@ -34,12 +33,6 @@ public class TempRay : MonoBehaviour
     void Update()
     {
         newPositions.Clear();
-        goInfo.Clear();
-
-
-        Ray rayScale = new Ray(transform.position, transform.right);
-        RaycastHit[] ScaleY = Physics.RaycastAll(rayScale);
-        ScaleY = ScaleY.OrderBy(hit => hit.distance).ToArray();
 
         PositionCreationRay();
 
@@ -54,13 +47,14 @@ public class TempRay : MonoBehaviour
                                                   (float)Math.Round(RayDreta[i].point.y, 2),
                                                   (float)Math.Round(RayDreta[i].point.z, 2));
 
-            newPositions.Add(RayEsquerra[i].collider.gameObject.GetInstanceID(), Tuple.Create(roundedPointEsquerra, roundedPointDreta));
-            goInfo.Add(RayEsquerra[i].collider.gameObject.GetInstanceID(), ScaleY[i].collider.gameObject.transform.localScale);
+            newPositions.Add(RayEsquerra[i].collider.gameObject.GetInstanceID(), Tuple.Create(roundedPointEsquerra, roundedPointDreta, RayEsquerra[i].collider.gameObject));
+
         }
 
 
 
         //calcular i adegir objectes i posicions noves
+
         foreach (KeyValuePair<int, HitObjects> planeValue in hObjetcs)
         {
             if (hObjetcs.Count > newPositions.Count && !newPositions.ContainsKey(planeValue.Key)) //Eliminar elements
@@ -75,18 +69,18 @@ public class TempRay : MonoBehaviour
                 actualizePositions(planeValue.Key);
             }
 
-            hObjetcs[planeValue.Key].goScale = goInfo[planeValue.Key]; // actualitzar escala
+            hObjetcs[planeValue.Key].goGeneralVariables = newPositions[planeValue.Key].Item3; // actualitzar escala
 
 
         }
-        foreach (KeyValuePair<int, Tuple<Vector3, Vector3>> positions in newPositions)
+        foreach (KeyValuePair<int, Tuple<Vector3, Vector3, GameObject>> positions in newPositions)
         {
             if (lastPositions.Count < newPositions.Count && !lastPositions.ContainsKey(positions.Key)) // comparar si tamany es diferent i el objectes esta creat o no 
             {
                 HitObjects colidedObject = new HitObjects();
                 colidedObject.initPosition = positions.Value.Item1;
                 colidedObject.endPosition = positions.Value.Item2;
-                colidedObject.goScale = goInfo[positions.Key];
+                colidedObject.goGeneralVariables = positions.Value.Item3;
                 hObjetcs.Add(positions.Key, colidedObject);
             }
         }
@@ -144,6 +138,5 @@ public class TempRay : MonoBehaviour
         RayDreta = RayDreta.OrderBy(hit => hit.distance).ToArray();
         Array.Reverse(RayDreta);
     }
-
 
 }

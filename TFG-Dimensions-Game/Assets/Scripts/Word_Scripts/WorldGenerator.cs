@@ -74,7 +74,7 @@ public class WorldGenerator : MonoBehaviour
     private void UpdateFloor(GameObject planes, int number, float scale, float position)
     {
         planes.layer = LayerMask.NameToLayer("2D");
-        planes.transform.position = new Vector3(rInfo.hObjetcs[number].initPosition.x + position, rInfo.hObjetcs[number].initPosition.y, rInfo.hObjetcs[number].initPosition.z);
-        planes.transform.localScale = new Vector3(scale / 10, 1, rInfo.hObjetcs[number].goScale.y / 10); //scale units 1 position = 10 scale//new Vector3(scale / 10, 1, plane.transform.localScale.z / 10);
+        planes.transform.position = new Vector3(rInfo.hObjetcs[number].initPosition.x + position, rInfo.hObjetcs[number].goGeneralVariables.transform.position.y, rInfo.hObjetcs[number].initPosition.z);
+        planes.transform.localScale = new Vector3(scale / 10, 1, rInfo.hObjetcs[number].goGeneralVariables.transform.localScale.y / 10); //scale units 1 position = 10 scale//new Vector3(scale / 10, 1, plane.transform.localScale.z / 10);
     }
 }
