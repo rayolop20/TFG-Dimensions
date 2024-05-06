@@ -39,16 +39,7 @@ public class TempRay : MonoBehaviour
         //calcular numero de hits del rayo
         for (int i = 0; i < RayEsquerra.Count(); i++)
         {
-            Vector3 roundedPointEsquerra = new Vector3((float)Math.Round(RayEsquerra[i].point.x, 2),
-                                                  (float)Math.Round(RayEsquerra[i].point.y, 2),
-                                                  (float)Math.Round(RayEsquerra[i].point.z, 2));
-
-            Vector3 roundedPointDreta = new Vector3((float)Math.Round(RayDreta[i].point.x, 2),
-                                                  (float)Math.Round(RayDreta[i].point.y, 2),
-                                                  (float)Math.Round(RayDreta[i].point.z, 2));
-
-            newPositions.Add(RayEsquerra[i].collider.gameObject.GetInstanceID(), Tuple.Create(roundedPointEsquerra, roundedPointDreta, RayEsquerra[i].collider.gameObject));
-
+            newPositions.Add(RayEsquerra[i].collider.gameObject.GetInstanceID(), Tuple.Create(RayEsquerra[i].point, RayDreta[i].point, RayEsquerra[i].collider.gameObject));
         }
 
 

@@ -49,7 +49,8 @@ public class RayLogic : MonoBehaviour
                                                   (float)Math.Round(RayDreta[i].point.y, 2),
                                                   (float)Math.Round(RayDreta[i].point.z, 2));
 
-            newPositions.Add(RayEsquerra[i].collider.gameObject.GetInstanceID(), Tuple.Create(roundedPointEsquerra, roundedPointDreta, RayEsquerra[i].collider.gameObject));
+            newPositions.Add(RayEsquerra[i].collider.gameObject.GetInstanceID(),
+                Tuple.Create(RayEsquerra[i].point, RayDreta[i].point, RayEsquerra[i].collider.gameObject));
  
         }
 
