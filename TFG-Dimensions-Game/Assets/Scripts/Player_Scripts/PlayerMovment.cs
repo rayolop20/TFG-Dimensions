@@ -15,7 +15,6 @@ public class PlayerMovment : MonoBehaviour
     void Start()
     {
         rb = GetComponent<Rigidbody>();
-        // Congelar las rotaciones en el Rigidbody
         rb.constraints = RigidbodyConstraints.FreezeRotation;
     }
 
