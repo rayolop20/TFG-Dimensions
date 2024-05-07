@@ -44,7 +44,8 @@ public class RayLogic : MonoBehaviour
         {
             if (RayEsquerra[i].collider.gameObject.tag != "Player")
             {
-                newPositions.Add(RayEsquerra[i].collider.gameObject.GetInstanceID(), Tuple.Create(RayEsquerra[i].point, RayDreta[i].point, RayEsquerra[i].collider.gameObject));
+                newPositions.Add(RayEsquerra[i].collider.gameObject.GetInstanceID(),
+                    Tuple.Create(RayDreta[i].point, RayEsquerra[i].point, RayEsquerra[i].collider.gameObject));
             }
             else
             {

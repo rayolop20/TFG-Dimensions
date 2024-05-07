@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 
 public class WorldGenerator : MonoBehaviour
@@ -53,28 +54,30 @@ public class WorldGenerator : MonoBehaviour
             {
                 int index = item.Key; // Clave del diccionario
                 GameObject plane = item.Value; //valor de dintre
-                float scale = getObjectScale(index);
+                Vector3 position = getObjectPos2D(index);
                 //float scale = rInfo.hObjetcs[index].endPosition.z - rInfo.hObjetcs[index].initPosition.z;
-                float position = getObjectPos2D(scale);
+                float scale = GetScale(index);
                 UpdateFloor(plane, index, scale, position);
             }
         }
     }
 
-    private float getObjectScale(int numobj)
+    private Vector3 getObjectPos2D(int numobj)
     {
-        float scale = rInfo.hObjetcs[numobj].endPosition.x - rInfo.hObjetcs[numobj].initPosition.x;
-        return scale;
+        Vector3 distanceBewteenPoints = rInfo.hObjetcs[numobj].endPosition - rInfo.hObjetcs[numobj].initPosition;
+        Vector3 centralPoint = distanceBewteenPoints / 2;
+        return centralPoint;
     }
-    private float getObjectPos2D(float scale)
+    private float GetScale(int numobj)
     {
-        float position = scale / 2;
-        return position;
+       
+        float Scale = Mathf.Sqrt(Mathf.Pow(rInfo.hObjetcs[numobj].endPosition.x - rInfo.hObjetcs[numobj].initPosition.x, 2) + Mathf.Pow(rInfo.hObjetcs[numobj].endPosition.z - rInfo.hObjetcs[numobj].initPosition.z, 2));
+        return Scale;
     }
-    private void UpdateFloor(GameObject planes, int number, float scale, float position)
+    private void UpdateFloor(GameObject planes, int number, float scale, Vector3 position)
     {
         planes.layer = LayerMask.NameToLayer("2D");
-        planes.transform.position = new Vector3(rInfo.hObjetcs[number].initPosition.x + position, rInfo.hObjetcs[number].goGeneralVariables.transform.position.y, rInfo.hObjetcs[number].initPosition.z);
+        planes.transform.position = new Vector3(rInfo.hObjetcs[number].initPosition.x + position.x, rInfo.hObjetcs[number].goGeneralVariables.transform.position.y, rInfo.hObjetcs[number].initPosition.z + position.z);
         planes.transform.localScale = new Vector3(scale / 10, 1, rInfo.hObjetcs[number].goGeneralVariables.transform.localScale.y / 10); //scale units 1 position = 10 scale//new Vector3(scale / 10, 1, plane.transform.localScale.z / 10);
         planes.transform.eulerAngles = new Vector3(planes.transform.eulerAngles.x, 0,rInfo.rotationPlayer.transform.eulerAngles.y) ; //new Vector3(scale / 10, 1, rInfo.hObjetcs[number].goScale.y / 10); //scale units 1 position = 10 scale
     }
