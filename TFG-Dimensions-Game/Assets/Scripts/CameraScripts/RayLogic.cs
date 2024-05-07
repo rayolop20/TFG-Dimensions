@@ -23,6 +23,7 @@ public class RayLogic : MonoBehaviour
     private float rayLenght = 20f;
     RaycastHit[] RayEsquerra;
     RaycastHit[] RayDreta;
+    public Transform rotationPlayer;
 
     private Dictionary<int, Tuple<Vector3, Vector3, GameObject>> newPositions = new();
     private Dictionary<int, Tuple<Vector3, Vector3, GameObject>> lastPositions = new();
@@ -41,23 +42,22 @@ public class RayLogic : MonoBehaviour
         //calcular numero de hits del rayo
         for (int i = 0; i < RayEsquerra.Count(); i++)
         {
-            Vector3 roundedPointEsquerra = new Vector3((float)Math.Round(RayEsquerra[i].point.x, 2),
-                                                  (float)Math.Round(RayEsquerra[i].point.y, 2),
-                                                  (float)Math.Round(RayEsquerra[i].point.z, 2));
+            if (RayEsquerra[i].collider.gameObject.tag != "Player")
+            {
+                newPositions.Add(RayEsquerra[i].collider.gameObject.GetInstanceID(), Tuple.Create(RayEsquerra[i].point, RayDreta[i].point, RayEsquerra[i].collider.gameObject));
+            }
+            else
+            {
+                rotationPlayer = RayEsquerra[i].collider.gameObject.transform;
+            }
 
-            Vector3 roundedPointDreta = new Vector3((float)Math.Round(RayDreta[i].point.x, 2),
-                                                  (float)Math.Round(RayDreta[i].point.y, 2),
-                                                  (float)Math.Round(RayDreta[i].point.z, 2));
 
-            newPositions.Add(RayEsquerra[i].collider.gameObject.GetInstanceID(),
-                Tuple.Create(RayEsquerra[i].point, RayDreta[i].point, RayEsquerra[i].collider.gameObject));
- 
         }
 
 
 
         //calcular i adegir objectes i posicions noves
-      
+
         foreach (KeyValuePair<int, HitObjects> planeValue in hObjetcs)
         {
             if (hObjetcs.Count > newPositions.Count && !newPositions.ContainsKey(planeValue.Key)) //Eliminar elements
@@ -112,7 +112,7 @@ public class RayLogic : MonoBehaviour
 
         Vector3 rayPosition2 = target.TransformPoint(Vector3.right * orbitRadius); // blau (dreta a esquerra)
         Vector3 direction2 = (target.position - rayPosition2).normalized;
-        Debug.DrawRay(new Vector3(rayPosition2.x, rayPosition2.y + 1, rayPosition2.z), direction2 * 20f, Color.blue);
+        Debug.DrawRay(new Vector3(rayPosition2.x, rayPosition2.y, rayPosition2.z), direction2 * 20f, Color.blue);
     }
 
     private void actualizePositions(int objectId)
