@@ -27,12 +27,12 @@ public class PlayerMovment : MonoBehaviour
         Vector3 movementDirection = new Vector3(horizontalInput, 0, 0);
         Vector3 rotationMovment = new Vector3(0,verticalInput * rotationSpeed * Time.deltaTime, 0);
 
-        if (Input.GetKey(KeyCode.A))
+        if (Input.GetKey(KeyCode.D))
         {
             transform.position = transform.position + transform.right * movementSpeed * Time.deltaTime;
         }
         
-        if (Input.GetKey(KeyCode.D))
+        if (Input.GetKey(KeyCode.A))
         {
             transform.position = transform.position + (-transform.right) * movementSpeed * Time.deltaTime;
         }
