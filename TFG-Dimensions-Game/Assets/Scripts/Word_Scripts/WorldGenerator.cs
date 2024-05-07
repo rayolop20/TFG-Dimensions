@@ -70,7 +70,7 @@ public class WorldGenerator : MonoBehaviour
     }
     private float GetScale(int numobj)
     {
-       
+       //Formula Euclidiana
         float Scale = Mathf.Sqrt(Mathf.Pow(rInfo.hObjetcs[numobj].endPosition.x - rInfo.hObjetcs[numobj].initPosition.x, 2) + Mathf.Pow(rInfo.hObjetcs[numobj].endPosition.z - rInfo.hObjetcs[numobj].initPosition.z, 2));
         return Scale;
     }

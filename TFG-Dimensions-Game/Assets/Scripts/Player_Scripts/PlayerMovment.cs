@@ -10,9 +10,13 @@ public class PlayerMovment : MonoBehaviour
     public float rotationSpeed;
     public float movementSpeed;
     public float JumpPower;
+
+    Rigidbody rb;
     void Start()
     {
-
+        rb = GetComponent<Rigidbody>();
+        // Congelar las rotaciones en el Rigidbody
+        rb.constraints = RigidbodyConstraints.FreezeRotation;
     }
 
     void Update()
@@ -45,4 +49,14 @@ public class PlayerMovment : MonoBehaviour
         }
     }
 
+    void OnCollisionEnter(Collision collision)
+    {
+        // Verifica si el jugador ha colisionado con otro objeto
+        if (collision.gameObject.tag == "Obstacle")
+        {
+            // Hace que el jugador se detenga
+            rb.velocity = Vector3.zero;
+            rb.angularVelocity = Vector3.zero;
+        }
+    }
 }
