@@ -552,6 +552,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   target: {fileID: 1259717908}
+  orbitRadius: 5
+  rotationPlayer: {fileID: 0}
 --- !u!1 &1285239166
 GameObject:
   m_ObjectHideFlags: 0
