@@ -16,9 +16,9 @@ using static UnityEngine.GraphicsBuffer;
 public class TempRay : MonoBehaviour
 {
     public Transform target;
-    private float orbitRadius = 10f; //distancia del centre
+    private float orbitRadius = 20f; //distancia del centre
 
-    private float rayLenght = 20f;
+    private float rayLenght = 40f;
     RaycastHit[] RayEsquerra;
     RaycastHit[] RayDreta;
 
@@ -96,11 +96,11 @@ public class TempRay : MonoBehaviour
     {
         Vector3 rayPosition = target.TransformPoint(-Vector3.right * orbitRadius); // vermell (esquerra cap a dreta)
         Vector3 direction = (target.position - rayPosition).normalized;
-        Debug.DrawRay(rayPosition, direction * 20f, Color.red);
+        Debug.DrawRay(rayPosition, direction * 30f, Color.red);
 
         Vector3 rayPosition2 = target.TransformPoint(Vector3.right * orbitRadius); // blau (dreta a esquerra)
         Vector3 direction2 = (target.position - rayPosition2).normalized;
-        Debug.DrawRay(new Vector3(rayPosition2.x, rayPosition2.y + 1, rayPosition2.z), direction2 * 20f, Color.blue);
+        Debug.DrawRay(new Vector3(rayPosition2.x, rayPosition2.y + 1, rayPosition2.z), direction2 * 30f, Color.blue);
     }
 
     private void actualizePositions(int objectId)

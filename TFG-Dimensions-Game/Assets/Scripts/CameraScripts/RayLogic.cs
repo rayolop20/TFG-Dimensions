@@ -20,9 +20,9 @@ public class HitObjects
 public class RayLogic : MonoBehaviour
 {
     public Transform target;
-    public float orbitRadius = 10f; //distancia del centre
+    public float orbitRadius = 20f; //distancia del centre
 
-    private float rayLenght = 10f;
+    private float rayLenght = 40f;
     RaycastHit[] RayEsquerra;
     RaycastHit[] RayDreta;
     public Transform rotationPlayer;
@@ -54,7 +54,7 @@ public class RayLogic : MonoBehaviour
 
                 float dotProductRayEsquerra = Vector3.Dot(directionEsquerra.normalized, RayEsquerra[i].normal);
                 float dotProductRayDreta= Vector3.Dot(directionDreta.normalized, RayDreta[i].normal);
-                if (i < RayEsquerra.Length && i < RayDreta.Length && RayEsquerra[i].point != RayDreta[i].point)// && (RayEsquerra[i].collider.gameObject.GetInstanceID() == RayDreta[i].collider.gameObject.GetInstanceID()))
+                if (i < RayEsquerra.Length && i < RayDreta.Length && RayEsquerra[i].point != RayDreta[i].point)
                 {
                     newPositions.Add(RayEsquerra[i].collider.gameObject.GetInstanceID(),
                             Tuple.Create(RayDreta[i].point, RayEsquerra[i].point, RayEsquerra[i].collider.gameObject));
@@ -69,16 +69,6 @@ public class RayLogic : MonoBehaviour
                     newPositions.Add(RayDreta[i].collider.gameObject.GetInstanceID(),
                             Tuple.Create(endPositionDreta, RayEsquerra[i].point, RayEsquerra[i].collider.gameObject));
                 }
-                //else if (RayEsquerra.Length < RayDreta.Length)
-                //{
-                //    newPositions.Add(raySwap[i].collider.gameObject.GetInstanceID(),
-                //            Tuple.Create(RayDreta[i].point, endPositionEsquerra, RayDreta[i].collider.gameObject));
-                //}
-                // else
-                // {
-                //     RayEsquerra = RayEsquerra.OrderByDescending(hit => hit.distance).ToArray();
-                //     RayDreta = RayDreta.OrderBy(hit => hit.distance).ToArray();
-                // }
 
             }
             else
@@ -145,11 +135,11 @@ public class RayLogic : MonoBehaviour
         Vector3 rayPosition = target.TransformPoint(-Vector3.right * orbitRadius); // vermell (esquerra cap a dreta)
         Vector3 direction = (target.position - rayPosition).normalized;
  
-        Debug.DrawRay(rayPosition, direction * 10f, Color.red);
+        Debug.DrawRay(rayPosition, direction * 40f, Color.red);
 
         Vector3 rayPosition2 = target.TransformPoint(Vector3.right * orbitRadius); // blau (dreta a esquerra)
         Vector3 direction2 = (target.position - rayPosition2).normalized;
-        Debug.DrawRay(new Vector3(rayPosition2.x, rayPosition2.y, rayPosition2.z), direction2 * 10f, Color.blue);
+        Debug.DrawRay(new Vector3(rayPosition2.x, rayPosition2.y, rayPosition2.z), direction2 * 40f, Color.blue);
     }
 
     private void actualizePositions(int objectId)//
