@@ -7,7 +7,7 @@
 Este es mi TFG, un videojuego donde exploraras un mundo 3D coon la Vision 2D, donde al rotar vas a poder obvservar la deformacion del mundo. 
 
 ## Gameplay
-**Input Keys
+** Input Keys
     - D: move forward
     - A: Move backward
     - W: Rotate left
