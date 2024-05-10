@@ -8,7 +8,7 @@ Este es mi TFG, un videojuego donde exploraras un mundo 3D coon la Vision 2D, do
 
 ## Gameplay
 ** Input Keys
-    - D: move forward
-    - A: Move backward
-    - W: Rotate left
-    - S: Rotate Right
+- D: move forward
+- A: Move backward
+- W: Rotate left
+- S: Rotate Right
