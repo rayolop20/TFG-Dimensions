@@ -12,3 +12,8 @@ This is my final degree project, a video game where you will explore a 3D world 
 - A: Move backward
 - W: Rotate left
 - S: Rotate Right
+
+## Install
+**Alpha**
+- Download the alpha version from the releases section on Github: https://github.com/rayolop20/TFG-Dimensions/releases
+- Unpack .Zip and Execute TFG-Dimensions-Game.exe
