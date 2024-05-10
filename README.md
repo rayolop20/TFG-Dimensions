@@ -4,11 +4,11 @@
     - Pol Maresch Marxach: https://github.com/rayolop20
 
 ## Description
-Este es mi TFG, un videojuego donde exploraras un mundo 3D coon la Vision 2D, donde al rotar vas a poder obvservar la deformacion del mundo. 
+This is my final degree project, a video game where you will explore a 3D world with 2D Vision, where upon rotating, you'll be able to observe the deformation of the world.
 
 ## Gameplay
-**Input Keys
-    - D: move forward
-    - A: Move backward
-    - W: Rotate left
-    - S: Rotate Right
+**Input Keys**
+- D: move forward
+- A: Move backward
+- W: Rotate left
+- S: Rotate Right
