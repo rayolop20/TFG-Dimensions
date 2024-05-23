@@ -159,7 +159,7 @@ public class RayLogic : MonoBehaviour
         RayEsquerra = Physics.RaycastAll(rayPositionEsquerra, directionEsquerra, rayLenght); // esquerra
         endPositionEsquerra = rayPositionEsquerra;
 
-        Vector3 rayPositionDreta = target.TransformPoint(Vector3.right * orbitRadius); // vermell (esquerra cap a dreta)
+        Vector3 rayPositionDreta = target.TransformPoint(Vector3.right * orbitRadius); // vermell (dreta cap a Esquerra)
         // Calcular la dirección del rayo hacia el objetivo
         directionDreta = (target.position - rayPositionDreta).normalized;
         RayDreta = Physics.RaycastAll(rayPositionDreta, directionDreta, rayLenght); // dreta
