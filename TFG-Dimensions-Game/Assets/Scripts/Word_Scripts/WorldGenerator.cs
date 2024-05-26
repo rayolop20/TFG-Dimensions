@@ -27,7 +27,7 @@ public class WorldGenerator : MonoBehaviour
             {
                 if (numberObjects < rInfo.hObjetcs.Count && !dictPlanes.ContainsKey(g.Key))
                 {
-                    GameObject newPlane = Instantiate(plane, Vector3.zero, Quaternion.Euler(-90, 0, 0));
+                    GameObject newPlane = Instantiate(plane, Vector3.zero, plane.transform.rotation);
                     dictPlanes.Add(g.Key, newPlane);
                     numberObjects++;
                 }
@@ -79,6 +79,6 @@ public class WorldGenerator : MonoBehaviour
         planes.layer = LayerMask.NameToLayer("2D");
         planes.transform.position = new Vector3(rInfo.hObjetcs[number].initPosition.x + position.x, rInfo.hObjetcs[number].goGeneralVariables.transform.position.y, rInfo.hObjetcs[number].initPosition.z + position.z);
         planes.transform.localScale = new Vector3(scale / 10, 1, rInfo.hObjetcs[number].goGeneralVariables.transform.localScale.y / 10); //scale units 1 position = 10 scale
-        planes.transform.eulerAngles = new Vector3(planes.transform.eulerAngles.x , 0,rInfo.rotationPlayer.transform.eulerAngles.y); //scale units 1 position = 10 scale  // rInfo.hObjetcs[number].goGeneralVariables.transform.eulerAngles.z
+        planes.transform.eulerAngles = new Vector3(planes.transform.eulerAngles.x , 0, rInfo.rotationPlayer.transform.eulerAngles.y); //scale units 1 position = 10 scale  // rInfo.hObjetcs[number].goGeneralVariables.transform.eulerAngles.z
     }
 }
