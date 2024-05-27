@@ -8,7 +8,8 @@ using UnityEngine.UIElements;
 public class WorldGenerator : MonoBehaviour
 {
     public GameObject plane;
-    public RayLogic rInfo;
+    public RayOrder rOrdered;
+    public Transform pInfo;
     Dictionary<int, GameObject> dictPlanes = new Dictionary<int, GameObject>();
 
     int numberObjects;
@@ -21,11 +22,11 @@ public class WorldGenerator : MonoBehaviour
     void Update()
     {
 
-        if (numberObjects != rInfo.hObjetcs.Count) // crerar numeror de objectes segons cada 2 punts
+        if (numberObjects != rOrdered.notRepItems.Count) // crerar numeror de objectes segons cada 2 punts
         {
-            foreach (KeyValuePair<int, HitObjects> g in rInfo.hObjetcs)
+            foreach (KeyValuePair<int, HitObjects> g in rOrdered.notRepItems)
             {
-                if (numberObjects < rInfo.hObjetcs.Count && !dictPlanes.ContainsKey(g.Key))
+                if (numberObjects < rOrdered.notRepItems.Count && !dictPlanes.ContainsKey(g.Key))
                 {
                     GameObject newPlane = Instantiate(plane, Vector3.zero, plane.transform.rotation);
                     dictPlanes.Add(g.Key, newPlane);
@@ -34,11 +35,11 @@ public class WorldGenerator : MonoBehaviour
             }
         }
 
-        if (numberObjects > rInfo.hObjetcs.Count)
+        if (numberObjects > rOrdered.notRepItems.Count)
         {
             foreach (KeyValuePair<int, GameObject> removed in dictPlanes)
             {
-                if (!rInfo.hObjetcs.ContainsKey(removed.Key))
+                if (!rOrdered.notRepItems.ContainsKey(removed.Key))
                 {
                     Destroy(dictPlanes[removed.Key].gameObject);
                     dictPlanes.Remove(removed.Key);
@@ -48,7 +49,7 @@ public class WorldGenerator : MonoBehaviour
             }
         }
 
-        if (numberObjects == rInfo.hObjetcs.Count)
+        if (numberObjects == rOrdered.notRepItems.Count)
         {
             foreach (KeyValuePair<int, GameObject> item in dictPlanes)
             {
@@ -64,22 +65,22 @@ public class WorldGenerator : MonoBehaviour
 
     private Vector3 getObjectPos2D(int numobj)
     {
-        Vector3 distanceBewteenPoints = rInfo.hObjetcs[numobj].endPosition - rInfo.hObjetcs[numobj].initPosition;
+        Vector3 distanceBewteenPoints = rOrdered.notRepItems[numobj].endPosition - rOrdered.notRepItems[numobj].initPosition;
         Vector3 centralPoint = distanceBewteenPoints / 2;
         return centralPoint;
     }
     private float GetScale(int numobj)
     {
        //Formula Euclidiana
-        float Scale = Mathf.Sqrt(Mathf.Pow(rInfo.hObjetcs[numobj].endPosition.x - rInfo.hObjetcs[numobj].initPosition.x, 2) + Mathf.Pow(rInfo.hObjetcs[numobj].endPosition.z - rInfo.hObjetcs[numobj].initPosition.z, 2));
+        float Scale = Mathf.Sqrt(Mathf.Pow(rOrdered.notRepItems[numobj].endPosition.x - rOrdered.notRepItems[numobj].initPosition.x, 2) + Mathf.Pow(rOrdered.notRepItems[numobj].endPosition.z - rOrdered.notRepItems[numobj].initPosition.z, 2));
         return Scale;
     }
     private void UpdateFloor(GameObject planes, int number, float scale, Vector3 position)
     {
-        planes.layer = LayerMask.NameToLayer("2D");
-        planes.transform.position = new Vector3(rInfo.hObjetcs[number].initPosition.x + position.x, rInfo.hObjetcs[number].goGeneralVariables.transform.position.y, rInfo.hObjetcs[number].initPosition.z + position.z);
-        planes.transform.localScale = new Vector3(scale / 10, 1, rInfo.hObjetcs[number].goGeneralVariables.transform.localScale.y / 10); //scale units 1 position = 10 scale
+        planes.layer = LayerMask.NameToLayer("2D"); 
+        planes.transform.position = new Vector3(rOrdered.notRepItems[number].initPosition.x + position.x, rOrdered.notRepItems[number].goGeneralVariables.transform.position.y, rOrdered.notRepItems[number].initPosition.z + position.z);
+        planes.transform.localScale = new Vector3(scale / 10, 1, rOrdered.notRepItems[number].goGeneralVariables.transform.localScale.y / 10); //scale units 1 position = 10 scale
        // planes.transform.rotation = new Quaternion(planes.transform.rotation.x, planes.transform.rotation.y, rInfo.rotationPlayer.transform.rotation.z, planes.transform.rotation.w);
-        planes.transform.eulerAngles = new Vector3(planes.transform.eulerAngles.x , 0, rInfo.rotationPlayer.transform.eulerAngles.y); //scale units 1 position = 10 scale  // rInfo.hObjetcs[number].goGeneralVariables.transform.eulerAngles.z
+        planes.transform.eulerAngles = new Vector3(planes.transform.eulerAngles.x , 0, pInfo.transform.eulerAngles.y); //scale units 1 position = 10 scale  // rInfo.hObjetcs[number].goGeneralVariables.transform.eulerAngles.z
     }
 }

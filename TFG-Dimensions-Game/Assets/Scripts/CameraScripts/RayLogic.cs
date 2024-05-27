@@ -25,11 +25,11 @@ public class RayLogic : MonoBehaviour
     private float rayLenght = 40f;
     RaycastHit[] RayEsquerra;
     RaycastHit[] RayDreta;
-    public Transform rotationPlayer;
 
     private Dictionary<int, Tuple<Vector3, Vector3, GameObject>> newPositions = new();
     private Dictionary<int, Tuple<Vector3, Vector3, GameObject>> lastPositions = new();
     public Dictionary<int, HitObjects> hObjetcs = new();
+    [HideInInspector] public List<int> removeObjects = new();
 
     Vector3 endPositionDreta;
     Vector3 endPositionEsquerra;
@@ -71,10 +71,7 @@ public class RayLogic : MonoBehaviour
                 }
 
             }
-            else
-            {
-                rotationPlayer = RayEsquerra[i].collider.gameObject.transform;
-            }
+   
 
 
         }
@@ -87,6 +84,7 @@ public class RayLogic : MonoBehaviour
         {
             if (hObjetcs.Count > newPositions.Count && !newPositions.ContainsKey(planeValue.Key)) //Eliminar elements
             {
+                removeObjects.Add(planeValue.Key);
                 hObjetcs.Remove(planeValue.Key);
                 lastPositions.Remove(planeValue.Key);
                 return;
