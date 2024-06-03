@@ -65,8 +65,13 @@ public class WorldGenerator : MonoBehaviour
 
     private Vector3 getObjectPos2D(int numobj)
     {
-        Vector3 distanceBewteenPoints = rOrdered.notRepItems[numobj].endPosition - rOrdered.notRepItems[numobj].initPosition;
-        Vector3 centralPoint = distanceBewteenPoints / 2;
+        Vector3 centralPoint = Vector3.zero;
+        if (rOrdered.notRepItems.ContainsKey(numobj))
+        {
+            Vector3 distanceBewteenPoints = rOrdered.notRepItems[numobj].endPosition - rOrdered.notRepItems[numobj].initPosition;
+            centralPoint = distanceBewteenPoints / 2;
+        }
+
         return centralPoint;
     }
     private float GetScale(int numobj)

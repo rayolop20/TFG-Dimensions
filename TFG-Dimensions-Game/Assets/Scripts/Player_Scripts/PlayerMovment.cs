@@ -11,6 +11,8 @@ public class PlayerMovment : MonoBehaviour
     public float movementSpeed;
     public float JumpPower;
 
+    public bool playerIsOnGround = true;
+
     Rigidbody rb;
     void Start()
     {
@@ -30,21 +32,30 @@ public class PlayerMovment : MonoBehaviour
         if (Input.GetKey(KeyCode.D))
         {
             transform.position = transform.position + transform.right * movementSpeed * Time.deltaTime;
+            gameObject.GetComponent<SpriteRenderer>().flipX = false;
+            gameObject.GetComponent<Animator>().SetBool("Walk", true);
+            
         }
-        
-        if (Input.GetKey(KeyCode.A))
+        else if (Input.GetKey(KeyCode.A))
         {
             transform.position = transform.position + (-transform.right) * movementSpeed * Time.deltaTime;
+            gameObject.GetComponent<SpriteRenderer>().flipX = true;
+            gameObject.GetComponent<Animator>().SetBool("Walk", true);
         }
-     
-        if (Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.S))
+        else if (Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.S))
         {
             transform.Rotate(rotationMovment);
         }
-
-        if (Input.GetKey(KeyCode.Space))
+        else
         {
+            gameObject.GetComponent<Animator>().SetBool("Walk", false);
+        }
 
+        if (Input.GetKeyDown(KeyCode.Space) && playerIsOnGround == true)
+        {
+            rb.AddForce(new Vector3(0, JumpPower, 0), ForceMode.Impulse);
+            playerIsOnGround = false;
+            gameObject.GetComponent<Animator>().SetBool("Jump", true);
         }
     }
 
@@ -53,9 +64,8 @@ public class PlayerMovment : MonoBehaviour
         // Verifica si el jugador ha colisionado con otro objeto
         if (collision.gameObject.tag == "Obstacle")
         {
-            // Hace que el jugador se detenga
-            rb.velocity = Vector3.zero;
-            rb.angularVelocity = Vector3.zero;
+            playerIsOnGround = true;
+            gameObject.GetComponent<Animator>().SetBool("Jump", false);
         }
     }
 }
