@@ -1,12 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Numerics;
 using UnityEngine;
 
-public class RayOrder : MonoBehaviour
+public class LastRayorder : MonoBehaviour
 {
-    public RayLogic rInfo;
+    public RayLogic[] rInfo;
     [HideInInspector] public Dictionary<int, HitObjects> notRepItems = new();
     // Start is called before the first frame update
     void Start()
@@ -17,25 +16,25 @@ public class RayOrder : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        for (int i = 0; i < rInfo.hObjetcs.Count; i++)
+        for (int i = 0; i < rInfo.Count(); i++)
         {
-            foreach (KeyValuePair<int, HitObjects> g in rInfo.hObjetcs)
+            foreach (KeyValuePair<int, HitObjects> g in rInfo[i].hObjetcs)
             {
                 if (!notRepItems.ContainsKey(g.Key))
                 {
                     notRepItems.Add(g.Key, g.Value);
                 }
             }
-
-        }
-        for (int j = 0; j < rInfo.removeObjects.Count(); j++)
-        {
-            if (notRepItems.ContainsKey(rInfo.removeObjects[j]))
+            for (int j = 0; j < rInfo[i].removeObjects.Count(); j++)
             {
-                notRepItems.Remove(rInfo.removeObjects[j]);
-                rInfo.removeObjects.Remove(rInfo.removeObjects[j]);
+                if (notRepItems.ContainsKey(rInfo[i].removeObjects[j]))
+                {
+                    notRepItems.Remove(rInfo[i].removeObjects[j]);
+                    rInfo[i].removeObjects.Remove(rInfo[i].removeObjects[j]);
+                }
             }
         }
+
 
     }
 }

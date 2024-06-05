@@ -1,11 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.UIElements;
 
-
-public class WorldGenerator : MonoBehaviour
+public class LastWorldGenerator : MonoBehaviour
 {
     public GameObject plane;
     public RayOrder rOrdered;
