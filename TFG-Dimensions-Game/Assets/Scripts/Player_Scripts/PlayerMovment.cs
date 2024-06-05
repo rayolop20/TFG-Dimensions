@@ -13,7 +13,7 @@ public class PlayerMovment : MonoBehaviour
 
     public bool playerIsOnGround = true;
 
-    public int coinNumber = 0;
+    [HideInInspector] public int coinNumber = 0;
 
 
     Rigidbody rb;
@@ -36,14 +36,20 @@ public class PlayerMovment : MonoBehaviour
         {
             transform.position = transform.position + transform.right * movementSpeed * Time.deltaTime;
             gameObject.GetComponent<SpriteRenderer>().flipX = false;
-            gameObject.GetComponent<Animator>().SetBool("Walk", true);
-            
+            if (playerIsOnGround == true)
+            {
+                gameObject.GetComponent<Animator>().SetBool("Walk", true);
+            }
         }
-        else if (Input.GetKey(KeyCode.A))
+        else if (Input.GetKey(KeyCode.A) )
         {
             transform.position = transform.position + (-transform.right) * movementSpeed * Time.deltaTime;
             gameObject.GetComponent<SpriteRenderer>().flipX = true;
-            gameObject.GetComponent<Animator>().SetBool("Walk", true);
+            if (playerIsOnGround == true)
+            {
+                gameObject.GetComponent<Animator>().SetBool("Walk", true);
+            }
+            
         }
         else if (Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.S))
         {
@@ -65,7 +71,7 @@ public class PlayerMovment : MonoBehaviour
     void OnCollisionEnter(Collision collision)
     {
         // Verifica si el jugador ha colisionado con otro objeto
-        if (collision.gameObject.tag == "Obstacle")
+        if (collision.gameObject.tag == "Ground")
         {
             playerIsOnGround = true;
             gameObject.GetComponent<Animator>().SetBool("Jump", false);

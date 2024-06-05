@@ -6,9 +6,9 @@ using UnityEngine;
 public class RaysCreation : MonoBehaviour
 {
     public Transform target;
-    public float orbitRadius = 20f; //distancia del centre
+    public float orbitRadius; //distancia del centre
 
-    private float rayLenght = 40f;
+    public float rayLenght = 40f;
     public RaycastHit[] rayEsquerra;
     public RaycastHit[] rayDreta;
 
@@ -57,11 +57,11 @@ public class RaysCreation : MonoBehaviour
         Vector3 rayPosition = target.TransformPoint(-Vector3.right * orbitRadius); // vermell (esquerra cap a dreta)
         Vector3 direction = (target.position - rayPosition).normalized;
 
-        Debug.DrawRay(rayPosition, direction * 40f, Color.red);
+        Debug.DrawRay(rayPosition, direction * rayLenght, Color.red);
 
         Vector3 rayPosition2 = target.TransformPoint(Vector3.right * orbitRadius); // blau (dreta a esquerra)
         Vector3 direction2 = (target.position - rayPosition2).normalized;
-        Debug.DrawRay(new Vector3(rayPosition2.x, rayPosition2.y, rayPosition2.z), direction2 * 40f, Color.blue);
+        Debug.DrawRay(new Vector3(rayPosition2.x, rayPosition2.y, rayPosition2.z), direction2 * rayLenght, Color.blue);
     }
 
 
