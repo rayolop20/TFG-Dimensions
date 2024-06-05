@@ -13,6 +13,9 @@ public class PlayerMovment : MonoBehaviour
 
     public bool playerIsOnGround = true;
 
+    public int coinNumber = 0;
+
+
     Rigidbody rb;
     void Start()
     {
@@ -67,5 +70,7 @@ public class PlayerMovment : MonoBehaviour
             playerIsOnGround = true;
             gameObject.GetComponent<Animator>().SetBool("Jump", false);
         }
+
+
     }
 }
