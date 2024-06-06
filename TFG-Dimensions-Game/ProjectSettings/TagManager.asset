@@ -7,6 +7,8 @@ TagManager:
   - Obstacle
   - Coin
   - Ground
+  - Invisible Wall
+  - NoneExit
   layers:
   - Default
   - TransparentFX

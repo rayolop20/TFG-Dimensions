@@ -30,7 +30,7 @@ public class SwapMaterial : MonoBehaviour
             objectRenderer.material = Grass;
         }
         
-        if (tag == "Coin")
+        if (tag == "Coin" || tag == "NoneExit")
         {
             objectRenderer.material = Trasaparent;
         }
