@@ -4,7 +4,8 @@ using UnityEngine;
 
 public class SwapMaterial : MonoBehaviour
 {
-   public Material Trasaparent; // El nuevo material que deseas aplicar
+   public Material TrasaparentWall; // El nuevo material que deseas aplicar
+   public Material TransparentCoin; // El nuevo material que deseas aplicar
    public Material Grass; // El nuevo material que deseas aplicar
    
    private Renderer objectRenderer;
@@ -30,9 +31,15 @@ public class SwapMaterial : MonoBehaviour
             objectRenderer.material = Grass;
         }
         
-        if (tag == "Coin" || tag == "NoneExit")
+        if (tag == "NoneExit")
         {
-            objectRenderer.material = Trasaparent;
+            objectRenderer.material = TrasaparentWall;
         }
+        
+        if (tag == "Coin" )
+        {
+            objectRenderer.material = TransparentCoin;
+        }
+
     }
 }

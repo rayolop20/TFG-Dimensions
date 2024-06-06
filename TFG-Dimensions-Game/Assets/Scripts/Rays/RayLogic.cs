@@ -95,13 +95,18 @@ public class RayLogic : MonoBehaviour
                 return;
 
             }
-            else if ((hObjetcs[planeValue.Key].initPosition != newPositions[planeValue.Key].Item1 && hObjetcs[planeValue.Key].initPosition != newPositions[planeValue.Key].Item2) ||
-                (hObjetcs[planeValue.Key].endPosition != newPositions[planeValue.Key].Item1 && hObjetcs[planeValue.Key].endPosition != newPositions[planeValue.Key].Item2)) //mirar sio posicions son iguals segons key
+            if (hObjetcs.ContainsKey(planeValue.Key))
             {
-                actualizePositions(planeValue.Key);
+                if ((hObjetcs[planeValue.Key].initPosition != newPositions[planeValue.Key].Item1 && hObjetcs[planeValue.Key].initPosition != newPositions[planeValue.Key].Item2) ||
+                (hObjetcs[planeValue.Key].endPosition != newPositions[planeValue.Key].Item1 && hObjetcs[planeValue.Key].endPosition != newPositions[planeValue.Key].Item2)) //mirar sio posicions son iguals segons key
+                {
+                    actualizePositions(planeValue.Key);
+                }
+                hObjetcs[planeValue.Key].goGeneralVariables = newPositions[planeValue.Key].Item3; // actualitzar escala
             }
 
-            hObjetcs[planeValue.Key].goGeneralVariables = newPositions[planeValue.Key].Item3; // actualitzar escala
+
+          
 
 
         }
