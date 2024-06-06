@@ -11,12 +11,13 @@ public class WorldGenerator : MonoBehaviour
     public RayOrder rOrdered;
     public Transform pInfo;
     Dictionary<int, GameObject> dictPlanes = new Dictionary<int, GameObject>();
+    public SwapMaterial swapMaterial;
 
     int numberObjects;
 
     void Start()
     {
-
+        swapMaterial = GetComponent<SwapMaterial>();
     }
 
     void Update()
@@ -55,6 +56,9 @@ public class WorldGenerator : MonoBehaviour
             {
                 int index = item.Key; // Clave del diccionario
                 GameObject plane = item.Value; //valor de dintre
+                plane.tag = rOrdered.notRepItems[index].goGeneralVariables.tag;
+                swapMaterial.SwapMat(plane, plane.tag);
+
                 Vector3 position = getObjectPos2D(index);
                 //float scale = rInfo.hObjetcs[index].endPosition.z - rInfo.hObjetcs[index].initPosition.z;
                 float scale = GetScale(index);

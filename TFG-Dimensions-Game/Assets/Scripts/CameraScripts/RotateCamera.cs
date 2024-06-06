@@ -4,37 +4,32 @@ using UnityEngine;
 
 public class RotateCamera : MonoBehaviour
 {
-    public Transform player; // Referencia al transform del jugador
-    public float distance = 5.0f; // Distancia desde el jugador
-    public float height = 3.0f; // Altura de la cámara
-    public float rotationSpeed = 100.0f; // Velocidad de rotación
 
-    private float currentRotationAngle = 0.0f; // Ángulo de rotación actual alrededor del jugador
-    private Vector3 offset; // Offset inicial de la cámara
+    [SerializeField] private Camera cam;
+    [SerializeField] private Transform target;
 
-    void Start()
+    private Vector3 previousPosition;
+    void Update()
     {
-        // Calcula el offset inicial basado en la distancia y la altura
-        offset = new Vector3(0, height, -distance);
-    }
-
-    void LateUpdate()
-    {
-        // Manejar la entrada del ratón para la rotación de la cámara
-        if (Input.GetMouseButton(1)) // Si se mantiene presionado el botón derecho del ratón
+        if (Input.GetMouseButtonDown(0))
         {
-            float horizontalInput = Input.GetAxis("Mouse X");
-            currentRotationAngle += horizontalInput * rotationSpeed * Time.deltaTime;
+            previousPosition = cam.ScreenToViewportPoint(Input.mousePosition);
         }
 
-        // Calcular la posición deseada de la cámara
-        Quaternion rotation = Quaternion.Euler(45, currentRotationAngle, 0); // 45 grados hacia abajo y rotación alrededor del jugador
-        Vector3 desiredPosition = player.position + rotation * offset;
+        if (Input.GetMouseButton(0))
+        {
+            Vector3 direction = previousPosition - cam.ScreenToViewportPoint(Input.mousePosition);
+            cam.transform.position = target.position;
 
-        // Establecer la posición de la cámara
-        transform.position = desiredPosition;
+            cam.transform.RotateAround(new Vector3(), new Vector3(0, 1, 0), direction.x * 180);
+            cam.transform.Translate(new Vector3(0,0,-20));
+            previousPosition = cam.ScreenToViewportPoint(Input.mousePosition);
+        }
 
-        // Hacer que la cámara mire al jugador
-        transform.LookAt(player.position + Vector3.up * (height / 2));
+        //transform.position = new Vector3(player.position.x, player.position.y + 8.0f, player.position.z + 7.0f);
+        //
+        //transform.LookAt(player.position);
+        //
+        //transform.RotateAround(player.transform.position, Vector3.up, Input.GetAxis("Mouse X") * turnSpeed);
     }
 }
