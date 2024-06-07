@@ -6,6 +6,11 @@ using UnityEngine.SceneManagement;
 public class MenuControler : MonoBehaviour
 {
     // Start is called before the first frame update
+    public GameObject stOpEx;
+    public GameObject options;
+
+    bool optionsActive = true;
+    bool menuActive = false;
     void Start()
     {
         
@@ -33,10 +38,37 @@ public class MenuControler : MonoBehaviour
     }
 
 
-    public void NextLevelGame() {
+    public void Level2() {
 
         SceneManager.LoadScene("Level 2");
     }
+    public void Level3() {
+
+        SceneManager.LoadScene("Level 3");
+    }
+    
+    public void ReturnMainMenu() {
+
+        SceneManager.LoadScene("MainMenu");
+    }
+    
+    public void Close() {
+
+        options.SetActive(false);
+    }
+
+    
+    
+    public void OptionsOpen() {
+
+        optionsActive = !optionsActive;
+        menuActive = !menuActive;
+
+        stOpEx.SetActive(optionsActive);
+        options.SetActive(menuActive);
+    }   
+
+
 
 
 

@@ -15,10 +15,14 @@ public class PlayerMovment : MonoBehaviour
 
     [HideInInspector] public int coinNumber = 0;
 
+    public GameObject options;
+
+    CameraSwitch switchCamera;
 
     Rigidbody rb;
     void Start()
     {
+        switchCamera = gameObject.GetComponent<CameraSwitch>();
         rb = GetComponent<Rigidbody>();
         rb.constraints = RigidbodyConstraints.FreezeRotation;
     }
@@ -32,7 +36,7 @@ public class PlayerMovment : MonoBehaviour
         Vector3 movementDirection = new Vector3(horizontalInput, 0, 0);
         Vector3 rotationMovment = new Vector3(0,verticalInput * rotationSpeed * Time.deltaTime, 0);
 
-        if (Input.GetKey(KeyCode.D))
+        if (Input.GetKey(KeyCode.D) && switchCamera.cameraActive == false)
         {
             transform.position = transform.position + transform.right * movementSpeed * Time.deltaTime;
             gameObject.GetComponent<SpriteRenderer>().flipX = false;
@@ -41,7 +45,7 @@ public class PlayerMovment : MonoBehaviour
                 gameObject.GetComponent<Animator>().SetBool("Walk", true);
             }
         }
-        else if (Input.GetKey(KeyCode.A) )
+        else if (Input.GetKey(KeyCode.A) && switchCamera.cameraActive == false)
         {
             transform.position = transform.position + (-transform.right) * movementSpeed * Time.deltaTime;
             gameObject.GetComponent<SpriteRenderer>().flipX = true;
@@ -51,27 +55,32 @@ public class PlayerMovment : MonoBehaviour
             }
             
         }
-        else if (Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.S))
+        else if (Input.GetKey(KeyCode.W) && switchCamera.cameraActive == false || Input.GetKey(KeyCode.S) && switchCamera.cameraActive == false)
         {
-            transform.Rotate(rotationMovment);
+            transform.Rotate(rotationMovment * -1);
         }
         else
         {
             gameObject.GetComponent<Animator>().SetBool("Walk", false);
         }
 
-        if (Input.GetKeyDown(KeyCode.Space) && playerIsOnGround == true)
+        if (Input.GetKeyDown(KeyCode.Space) && playerIsOnGround == true && switchCamera.cameraActive == false)
         {
             rb.AddForce(new Vector3(0, JumpPower, 0), ForceMode.Impulse);
             playerIsOnGround = false;
             gameObject.GetComponent<Animator>().SetBool("Jump", true);
+        }
+        
+        if (Input.GetKeyDown(KeyCode.Escape) && playerIsOnGround == true && switchCamera.cameraActive == false)
+        {
+            options.SetActive(true);
         }
     }
 
     void OnCollisionEnter(Collision collision)
     {
         // Verifica si el jugador ha colisionado con otro objeto
-        if (collision.gameObject.tag == "Ground")
+        if (collision.gameObject.tag == "Ground" || collision.gameObject.tag == "Platform")
         {
             playerIsOnGround = true;
             gameObject.GetComponent<Animator>().SetBool("Jump", false);
