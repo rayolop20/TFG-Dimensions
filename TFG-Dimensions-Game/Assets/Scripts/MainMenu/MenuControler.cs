@@ -54,7 +54,7 @@ public class MenuControler : MonoBehaviour
     
     public void ReturnMainMenu() {
 
-        SceneManager.LoadScene("MainMenu");
+        SceneManager.LoadScene("Main Menu");
     }
     
     public void Close() {
