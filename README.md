@@ -15,5 +15,6 @@ This is my final degree project, a video game where you will explore a 3D world 
 
 ## Install
 **Alpha**
-- Download the alpha version from the releases section on Github: https://github.com/rayolop20/TFG-Dimensions/releases
-- Unpack .Zip and Execute TFG-Dimensions-Game.exe
+- Download The version from the releases section on Github: https://github.com/rayolop20/TFG-Dimensions/releases
+- Press on .rar and the game will start downloading in .rar
+- Unpack .rar and Execute TFG-Dimensions-Game.exe
