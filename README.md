@@ -12,6 +12,8 @@ This is my final degree project, a video game where you will explore a 3D world 
 - A: Move backward
 - W: Rotate left
 - S: Rotate Right
+- Shift: Swap Camera
+- Esc: Settings
 
 ## Install
 **Alpha**
