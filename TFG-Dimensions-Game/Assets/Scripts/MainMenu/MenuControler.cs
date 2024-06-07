@@ -8,6 +8,7 @@ public class MenuControler : MonoBehaviour
     // Start is called before the first frame update
     public GameObject stOpEx;
     public GameObject options;
+    public GameObject instructions;
 
     bool optionsActive = true;
     bool menuActive = false;
@@ -25,6 +26,10 @@ public class MenuControler : MonoBehaviour
     public void StartGame() {
 
         SceneManager.LoadScene("Level 1");
+    }
+    public void Instructions() {
+
+        instructions.SetActive(true);
     }
     
     public void ExitGame() {
