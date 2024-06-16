@@ -95,7 +95,7 @@ public class RayLogic : MonoBehaviour
                 return;
 
             }
-            if (hObjetcs.ContainsKey(planeValue.Key))
+            if (hObjetcs.ContainsKey(planeValue.Key) && newPositions.ContainsKey(planeValue.Key))
             {
                 if ((hObjetcs[planeValue.Key].initPosition != newPositions[planeValue.Key].Item1 && hObjetcs[planeValue.Key].initPosition != newPositions[planeValue.Key].Item2) ||
                 (hObjetcs[planeValue.Key].endPosition != newPositions[planeValue.Key].Item1 && hObjetcs[planeValue.Key].endPosition != newPositions[planeValue.Key].Item2)) //mirar sio posicions son iguals segons key

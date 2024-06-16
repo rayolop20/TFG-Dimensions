@@ -11,7 +11,7 @@ public class CameraSwitch : MonoBehaviour
     public Camera arround3D;
     public Camera arround2D;
     public SettingsInfo options;
-    public GameObject miniMap;
+
 
     public bool cameraFCamActve;
     public bool cameraActive;
@@ -30,8 +30,6 @@ public class CameraSwitch : MonoBehaviour
 
     void Update()
     {
-
-        miniMap.SetActive(options.MinimapActive);
 
         if (options.cam1.isOn == true)
         {
