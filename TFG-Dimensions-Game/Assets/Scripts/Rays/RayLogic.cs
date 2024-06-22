@@ -87,7 +87,7 @@ public class RayLogic : MonoBehaviour
 
         foreach (KeyValuePair<int, HitObjects> planeValue in hObjetcs)
         {
-            if (hObjetcs.Count > newPositions.Count && !newPositions.ContainsKey(planeValue.Key)) //Eliminar elements
+            if (!newPositions.ContainsKey(planeValue.Key)) //Eliminar elements
             {
                 removeObjects.Add(planeValue.Key);
                 hObjetcs.Remove(planeValue.Key);
@@ -122,20 +122,36 @@ public class RayLogic : MonoBehaviour
             }
         }
 
-
+        if (lastPositions.Count > newPositions.Count)
+        {
+            Debug.Log("Bug");
+        }
 
         foreach (var kvp in newPositions) //igualar diccionaris
         {
             if (!lastPositions.ContainsKey(kvp.Key))
             {
                 lastPositions.Add(kvp.Key, kvp.Value);
+                if (lastPositions.Count > newPositions.Count)
+                {
+                    Debug.Log("Bug");
+                }
             }
             else if (lastPositions.ContainsKey(kvp.Key))
             {
                 lastPositions[kvp.Key] = kvp.Value;
             }
+           //else if (lastPositions.Count > newPositions.Count && !newPositions.ContainsKey())
+           //{
+           //
+           //}
 
         }
+        if (lastPositions.Count > newPositions.Count)
+        {
+            Debug.Log("Bug");
+        }
+
     }
 
 
