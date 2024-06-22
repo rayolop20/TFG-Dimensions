@@ -17,6 +17,23 @@ There are 3 small levels that serve to demonstrate the functionality and potenti
 - Shift: Swap Camera
 - Esc: Settings
 
+## Versions Features:
+#Vertical Slice:
+- Mechanic Created
+- Player Movment
+- MiniMap
+
+#Beta:
+- Mechanic Optimized
+- 2 new secondary cameras
+- 3 new Levels
+- Textures added
+
+#Gold
+- Minimap Removed
+- General Bug Fixing
+  
+
 ## Install
 - Download The version from the releases section on Github: https://github.com/rayolop20/TFG-Dimensions/releases
 - Press on .zip and the game will start downloading in .zip
